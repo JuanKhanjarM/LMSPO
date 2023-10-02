@@ -1,0 +1,18 @@
+﻿<div class="m-4">
+    <p class="@HeaderClass">@HeaderText</p>
+    @if (!string.IsNullOrEmpty(SubHeaderText))
+    {
+        <p>@SubHeaderText</p>
+    }
+    <div class="@HeaderSubClass py-2">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public string HeaderText { get; set; } = string.Empty;
+    [Parameter] public string HeaderClass { get; set; } = string.Empty;
+    [Parameter] public string HeaderSubClass { get; set; } = string.Empty;
+    [Parameter] public string SubHeaderText { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

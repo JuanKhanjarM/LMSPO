@@ -1,0 +1,22 @@
+﻿@inherits ComponentBase
+
+<div class="col-sm-12 col-m-12 d-flex justify-content-sm-between align-content-between tableHeaderFont rounded-top px-4 py-2">
+    @if (Headers != null && Conditions!=null)
+    {
+        @for (int i = 0; i < Headers.Length; i++)
+        {
+            if (Conditions[i])
+            {
+                <div class="col-sm-3">
+                    @Headers[i]
+                </div>
+            }
+        }
+    }
+    
+</div>
+
+@code {
+    [Parameter] public string[] Headers { get; set; }
+    [Parameter] public bool[] Conditions { get; set; }
+}

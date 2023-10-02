@@ -1,0 +1,29 @@
+﻿<tr class="d-flex justify-content-sm-between align-baseline tableRowFont">
+    <td>@GroupProduct.PurchasedProduct.ProductName</td>
+    <td class="fw-bold">@GroupProduct.PurchasedProduct.ProductPrice</td>
+    <td class="fw-bold">
+        <span>@($"{GroupProduct.AddedQuantity + GroupProduct.InputProductQuantity}")</span>
+        @*<span>@($"{GroupProduct.AddedQty} + {GroupProduct.InputProductQuantity} = {GroupProduct.AddedQty + GroupProduct.InputProductQuantity}")</span>*@
+    </td>
+    <td>
+        <div class="position-relative">
+            <input type="number"
+                   @key="GroupProduct.PurchasedProductId"
+                   min="0"
+                   max="@GroupProduct.PurchasedProduct.PurchasedQty"
+                   class="inputNumber"
+                   id="@($"inputNumber{GroupProduct.PurchasedProductId}")"
+            @bind="GroupProduct.InputProductQuantity"
+            @oninput="()=>PurchasedProductAvailabilityQuantityChanged.InvokeAsync()" />
+
+            @if (IsInvalidQuantity())
+            {
+                @*<span class="position-absolute bottom-0 start-0 translate-middle p-2 bg-danger border border-white rounded-circle"></span>*@
+            }
+        </div>
+    </td>
+
+    <td>
+        <button class="btn btn-outline-danger border-0" style="width:24px;height:24px;" @onclick="RemoveProductClicked"><i class="fa fa-trash"></i></button>
+    </td>
+</tr>

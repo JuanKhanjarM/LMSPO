@@ -1,0 +1,16 @@
+﻿@inherits ComponentBase
+
+@if (GroupProduct.PurchasedProduct != null)
+{
+    <tr class="d-flex justify-content-sm-between align-baseline">
+        <td>@GroupProduct.PurchasedProduct.ProductName</td>
+        <td>@GroupProduct.PurchasedProduct.ProductPrice.ToString("c2")</td>
+        <td>@GroupProduct.AddedQuantity</td>
+    </tr>
+}
+
+
+@code {
+    [Parameter]
+    public GroupProductDto GroupProduct { get; set; } = new GroupProductDto();
+}

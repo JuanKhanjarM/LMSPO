@@ -1,0 +1,18 @@
+﻿
+<table class="table shadow-sm tableRowFont">
+    <tbody>
+        @foreach (var purchasedProductDto in PurchasedProductDtos)
+        {
+            <tr>
+                <td class="col-sm-4">@purchasedProductDto.ProductName</td>
+                <td class="col-sm-3 fw-bold">@purchasedProductDto.ProductPrice</td>
+                <td class="col-sm-3 fw-bold">@purchasedProductDto.PurchasedQty</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<PurchasedProductDto> PurchasedProductDtos { get; set; } = new List<PurchasedProductDto>();
+}

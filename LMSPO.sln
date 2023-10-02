@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSPO.SqlServer", "PlugIns\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSPO.BlazorServerApp", "LMSPO.BlazorServerApp\LMSPO.BlazorServerApp.csproj", "{F21E6E91-D293-4C7D-81F0-BB602C8F9E27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMSPO.ServicecExtention", "LMSPO.ServicecExtention\LMSPO.ServicecExtention.csproj", "{22E4BAB9-ECE6-40C9-A6AF-A27BB0D1349B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSPO.ServicecExtention", "LMSPO.ServicecExtention\LMSPO.ServicecExtention.csproj", "{22E4BAB9-ECE6-40C9-A6AF-A27BB0D1349B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
