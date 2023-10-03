@@ -1,0 +1,55 @@
+﻿@page "/customer/{customerId:int}"
+@using LMSPO.CrossCut.Dtos;
+@inject IWebExecuter _IWebExecuter
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Display Group cards and "Edit" button -->
+            @foreach (var group in customer.Groups)
+            {
+                <div class="card">
+                    <!-- Display Group details -->
+                    <button class="btn btn-primary" @onclick="() => ShowGroupDetails(group.GroupId)">Edit</button>
+                </div>
+            }
+        </div>
+        <div class="col-md-8">
+            @if (showPurchasedProducts)
+            {
+                <!-- Display PurchasedProduct details in col-8 -->
+                <h4>PurchasedProduct Details for Customer ID: @customerId</h4>
+                <!-- Add your PurchasedProduct details here -->
+            }
+            else
+            {
+                <!-- Display GroupProduct details in col-8 -->
+                <h4>GroupProduct Details for Group ID: @selectedGroupId</h4>
+                <GroupDetails GroupId="@selectedGroupId" customerId="customerId" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter] 
+    public int customerId { get; set; }
+    private bool showPurchasedProducts = true;
+    private int? selectedGroupId;
+
+    
+    private CustomerDto? customer { get; set; } = new CustomerDto();
+    private IEnumerable<PurchasedProductDto> purchasedProductDtos { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/{customerId}");
+    }
+    private void ShowGroupDetails(int groupId)
+    {
+        selectedGroupId = groupId;
+        
+        showPurchasedProducts = false;
+    }
+}

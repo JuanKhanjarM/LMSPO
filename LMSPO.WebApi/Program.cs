@@ -1,4 +1,4 @@
-
+using LMSPO.ServicecExtention;
 namespace LMSPO.WebApi
 {
     public class Program
@@ -13,6 +13,7 @@ namespace LMSPO.WebApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddRegisterServices(builder.Configuration);
 
             var app = builder.Build();
 

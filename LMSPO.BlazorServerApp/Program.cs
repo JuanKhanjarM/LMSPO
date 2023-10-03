@@ -1,5 +1,6 @@
 using LMSPO.BlazorServerApp.Areas.Identity;
 using LMSPO.BlazorServerApp.Data;
+using LMSPO.BlazorServerApp.WebApiConnection;
 using LMSPO.ServicecExtention;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,13 @@ namespace LMSPO.BlazorServerApp
             builder.Services.AddSingleton<WeatherForecastService>();
 
             builder.Services.AddRegisterServices(builder.Configuration);
+            //add httpclinetfactory
+            builder.Services.AddHttpClient("balszorclient", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5047/api/");
+                client.DefaultRequestHeaders.Add("Accept","application/json");
+            });
+            builder.Services.AddTransient<IWebExecuter, WebExecuter>();    
 
             var app = builder.Build();
 

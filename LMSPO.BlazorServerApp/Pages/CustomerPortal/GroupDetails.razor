@@ -1,0 +1,17 @@
+﻿@page "/groupDetails/{customerId:int}/{groupId:int}"
+
+@if (GroupId.HasValue)
+{
+    <!-- Display GroupProduct details based on GroupId -->
+    <h4>GroupProduct Details for Group ID: @GroupId</h4>
+    <!-- Add your GroupProduct details here -->
+}
+else
+{
+    <p>Select a Group to edit.</p>
+}
+
+@code {
+    [Parameter] public int? customerId { get; set; }
+    [Parameter] public int? GroupId { get; set; }
+}

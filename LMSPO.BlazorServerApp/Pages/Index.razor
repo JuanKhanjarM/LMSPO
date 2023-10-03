@@ -1,6 +1,7 @@
 ﻿@page "/"
+
 @using LMSPO.CrossCut.Dtos;
-@inject IGetCustomerWithGroupsAndProductsUC IGetCustomerWithGroupsAndProductsUC
+@inject IWebExecuter _IWebExecuter
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -8,11 +9,16 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+
+
+
 @code{
-    private CustomerDto customer { get; set; } = new CustomerDto();
-    protected override async Task OnInitializedAsync()
-    {
-        customer = await IGetCustomerWithGroupsAndProductsUC.ExecuteAsync(1);
-    }
+
+    //private CustomerDto? customer { get; set; } = new CustomerDto();
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/{1}");
+    //}
 }
 

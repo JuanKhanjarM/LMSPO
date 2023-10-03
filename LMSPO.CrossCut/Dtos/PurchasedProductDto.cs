@@ -9,8 +9,8 @@ namespace LMSPO.CrossCut.Dtos
         public decimal ProductPrice { get; set; }
         public int PurchasedQty { get; set; }
         public int CustomerId { get; set; }
-        public decimal TotalCost { get; set; } // You can calculate and set this value when needed
-        public int TotalAddedQuantity { get; set; } // You can calculate and set this value when needed
+        public decimal TotalCost { get; set; }
+        public int TotalAddedQuantity { get; set; } 
         public int GetIndividualAddedQuantityForGroupProduct { get; set; }
         public int PPInputQty { get; set; }
     }
