@@ -5,29 +5,24 @@ using LMSPO.UseCase.Exceptions;
 using LMSPO.UseCase.PluginsInterfaces;
 using LMSPO.UseCase.PurchasedProductsUCs.PurchasedProductsUCsInterfaces;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LMSPO.UseCase.PurchasedProductsUCs
 {
     public class GetPurchasedProductsByCustomerIdUC : IGetPurchasedProductsByCustomerIdUC
     {
         private readonly IPurchasedProductRepository _purchasedProductRepository;
-        private readonly ILogger<GetPurchasedProductsByCustomerIdUC> _logger; // Inject ILogger
+        private readonly ILogger<GetPurchasedProductsByCustomerIdUC> _logger;
 
         public GetPurchasedProductsByCustomerIdUC(IPurchasedProductRepository purchasedProductRepository, ILogger<GetPurchasedProductsByCustomerIdUC> logger)
         {
             _purchasedProductRepository = purchasedProductRepository ?? throw new ArgumentNullException(nameof(purchasedProductRepository));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Validate that logger is not null
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
         }
         public async Task<IEnumerable<PurchasedProductDto>> ExecuteAsync(int customerId)
         {
             if (customerId <= 0)
             {
-                _logger.LogError("Invalid customerId: {CustomerId}", customerId); // Log an error
+                _logger.LogError("Invalid customerId: {CustomerId}", customerId); 
                 throw new InvalidCustomerIdException("customerId must be a positive integer.");
             }
 

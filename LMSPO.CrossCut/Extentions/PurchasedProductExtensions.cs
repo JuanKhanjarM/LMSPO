@@ -28,10 +28,12 @@ namespace LMSPO.CrossCut.Extentions
             return purchasedProducts.Select(purchasedProduct => new PurchasedProductDto
             {
                 PurchasedProductId = purchasedProduct.PurchasedProductId,
-                ProductName = purchasedProduct.ProductName,
+                ProductName = purchasedProduct.ProductName.ToUpper(),
                 ProductPrice = purchasedProduct.ProductPrice,
                 CustomerId = purchasedProduct.CustomerId,
+                TotalCost=purchasedProduct.CalculateTotalCost(),
                 PurchasedQty = purchasedProduct.PurchasedQty,
+                TotalAddedQuantity=purchasedProduct.GetTotalAddedQuantity(),
                 PPInputQty = 0,
                 GetIndividualAddedQuantityForGroupProduct = purchasedProduct.GetIndividualAddedQuantityForGroupProduct()
             });

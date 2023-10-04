@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LMSPO.CoreBusiness.Entities;
 
 namespace LMSPO.UseCase.PluginsInterfaces
 {
     public interface IGroupRepository
     {
+        Task<Group?> CreateGroupAsync(int customerId, string groupName);
     }
 }

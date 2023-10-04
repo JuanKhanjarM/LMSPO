@@ -1,25 +1,101 @@
-﻿@page "/customer/{customerId:int}"
-@using LMSPO.CrossCut.Dtos;
+﻿@page "/customer"
+@page "/customer/{customerId:int}"
+
+
 @inject IWebExecuter _IWebExecuter
 
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+            <h4>Customer ID: @customerId : @customer.CustomerName</h4>
+            <h4>Groups ( @customer.Groups.Count() )</h4>
             <!-- Display Group cards and "Edit" button -->
             @foreach (var group in customer.Groups)
             {
                 <div class="card">
                     <!-- Display Group details -->
-                    <button class="btn btn-primary" @onclick="() => ShowGroupDetails(group.GroupId)">Edit</button>
+                    <div class="card-header">
+                        @group.GroupName
+                        @group.EAN
+                    </div>
+                    <div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>gp ID</th>
+                                    <th>gp Name</th>
+                                    <th>gp Price</th>
+                                    <th>Quantity</th>
+                                    <!-- Add more table headers as needed -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var gp in group.GroupProducts)
+                                {
+                                    <tr>
+                                        <td>@gp.PurchasedProduct</td>
+                                        <td>@gp.PurchasedProduct.ProductName</td>
+                                        <td>@gp.AddedQuantity</td>
+                                        <td>@gp.PurchasedProduct.PurchasedQty</td>
+                                        <!-- Add more table cells for other properties -->
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary" @onclick="() => ShowGroupDetails(group.GroupId)">Edit</button>
+                    </div>
                 </div>
             }
         </div>
         <div class="col-md-8">
             @if (showPurchasedProducts)
             {
-                <!-- Display PurchasedProduct details in col-8 -->
                 <h4>PurchasedProduct Details for Customer ID: @customerId</h4>
                 <!-- Add your PurchasedProduct details here -->
+                <div style="position: relative; height: 100%;">
+                    <!-- Content div (table) -->
+                    <div style="height: calc(100% - 40px); overflow-y: auto;">
+                        @if (purchasedProductDtos != null)
+                        {
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Product Name</th>
+                                        <th>Product Price</th>
+                                        <th>Purchased Quantity</th>
+                                        <th>Total cost</th>
+                                        <!-- Add more table headers as needed -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var productDto in purchasedProductDtos)
+                                    {
+                                        <tr>
+                                            <td>@productDto.PurchasedProductId</td>
+                                            <td>@productDto.ProductName</td>
+                                            <td>@productDto.ProductPrice</td>
+                                            <td>@productDto.PurchasedQty</td>
+                                            <td>@productDto.TotalCost</td>
+                                            <!-- Add more table cells for other properties -->
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p>No purchased products available.</p>
+                        }
+                    </div>
+
+                    <!-- Button div (bottom right) -->
+                    <div style="position: absolute; bottom: 0; right: 0;">
+                        <button class="btn btn-primary">Create Group</button>
+                    </div>
+                </div>
+
+
             }
             else
             {
@@ -33,23 +109,38 @@
 
 @code {
 
-    [Parameter] 
+    [Parameter]
     public int customerId { get; set; }
     private bool showPurchasedProducts = true;
     private int? selectedGroupId;
 
-    
+
     private CustomerDto? customer { get; set; } = new CustomerDto();
-    private IEnumerable<PurchasedProductDto> purchasedProductDtos { get; set; }
+    private IEnumerable<PurchasedProductDto>? purchasedProductDtos { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/{customerId}");
+        customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/customer/{customerId}");
     }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (customer != null)
+        {
+            purchasedProductDtos = await _IWebExecuter.InvokeGetTAsync<IEnumerable<PurchasedProductDto>>($"Customers/purchased-products/{customer.CustomerId}");
+        }
+    }
+    //private async Task<GroupDto> CreateGroup(int customerId,string groupName)
+    //{
+    //    //// Define the relative URL for your API endpoint
+    //    //string relativeUrl = $"Customers/{customerId}/{groupName}";
+
+    //    //// Call the InvokePostAsync method with the appropriate type parameters
+    //    //return await _IWebExecuter.InvokePostAsync<GroupDto>(relativeUrl);
+    //}
     private void ShowGroupDetails(int groupId)
     {
         selectedGroupId = groupId;
-        
+
         showPurchasedProducts = false;
     }
 }
