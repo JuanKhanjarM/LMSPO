@@ -16,19 +16,19 @@ namespace LMSPO.SqlServer.Repository
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
-        public async Task<Group?> CreateGroupAsync(int customerId, string groupName)
+        public async Task<Group?> CreateGroupAsync(Group group1)
         {
-            if (string.IsNullOrWhiteSpace(groupName))
+            if (string.IsNullOrWhiteSpace(group1.GroupName))
             {
                 _logger.LogError("Invalid group name provided.");
-                throw new ArgumentException("Group name is required.", nameof(groupName));
+                throw new ArgumentException("Group name is required.", nameof(group1.GroupName));
             }
 
             using (LMSDbContext _dbContext = _dbContextFactory.CreateDbContext())
             {
                 // Check if a group with the same name already exists for the customer
                 bool groupExists = await _dbContext.Groups
-                    .AnyAsync(g => g.CustomerId == customerId && g.GroupName == groupName);
+                    .AnyAsync(g => g.CustomerId == group1.CustomerId && g.GroupName.Equals(group1.GroupName));
 
                 if (groupExists)
                 {
@@ -36,7 +36,7 @@ namespace LMSPO.SqlServer.Repository
                     throw new InvalidOperationException("A group with the same name already exists for this customer.");
                 }
                 // Create a new group
-                var group = new Group(groupName);
+                var group = new Group(group1.GroupName);
                 
                 // Add the group to the database
                 _dbContext.Groups.Add(group);

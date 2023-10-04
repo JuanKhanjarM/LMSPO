@@ -5,6 +5,6 @@ namespace LMSPO.UseCase.GroupUCs.GroupUCInterfaces
 {
     public interface ICreateGroupUC
     {
-        Task<GroupDto?> ExcecuteAsync(int customerId, string groupName);
+        Task<GroupDto?> ExcecuteAsync(GroupDto group);
     }
 }

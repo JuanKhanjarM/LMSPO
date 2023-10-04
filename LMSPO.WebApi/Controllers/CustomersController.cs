@@ -53,29 +53,22 @@ namespace LMSPO.WebApi.Controllers
             return Ok(PurchasedProducts);
         }
 
-        [HttpPost("{customerId:int}")]
-        //http://localhost:5047/api/Customers/1/Sundhed
-        public async Task<IActionResult> CreateGroup(int customerId,[FromBody] string groupName)
+        [HttpPost("create-group")]
+        public async Task<IActionResult> CreateGroup([FromBody] GroupDto groupDto)
         {
-            try
-            {
-                // Validate customer ID and group name as needed
+            // Validate groupDto and perform any necessary processing
+            // Example: Call a service to create the group
+            GroupDto? createdGroup = await _createGroupUC.ExcecuteAsync(groupDto);
 
-                // Example: Call a service to create the group
-                GroupDto? createdGroup = await _createGroupUC.ExcecuteAsync(customerId, groupName);
-
-                if (createdGroup == null)
-                {
-                    return BadRequest("Failed to create the group.");
-                }
-                return Ok(createdGroup);
-            }
-            catch (Exception ex)
+            if (createdGroup == null)
             {
-                // Log the exception and handle it appropriately
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the request.");
+                return BadRequest("Failed to create the group.");
             }
+
+            // Return the created group
+            return Ok(createdGroup);
         }
+
 
 
         //[HttpPut("customer/{customerId:int}")]

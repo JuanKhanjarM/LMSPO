@@ -57,13 +57,13 @@ namespace LMSPO.BlazorServerApp.WebApiConnection
             }
         }
 
-        public async Task<TResponse?> InvokePostAsync<TRequest, TResponse>(string uri, TRequest data)
+        public async Task<T?> InvokePostAsync<T>(string uri, T data)
         {
             HttpClient httpClient = _httpClientFactory.CreateClient(_clientApiName);
             var json = JsonSerializer.Serialize(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.PostAsync(uri, content);
+            var response = await httpClient.PostAsJsonAsync(uri, content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -71,7 +71,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection
             }
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<TResponse>(responseContent);
+            return JsonSerializer.Deserialize<T>(responseContent);
         }
 
         public async Task<TResponse?> InvokePutAsync<TRequest, TResponse>(string relativeUrl, TRequest request)

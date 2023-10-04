@@ -19,5 +19,19 @@ namespace LMSPO.CrossCut.Extentions
             }
             return new GroupDto();
         }
+        public static Group ToEntity(this GroupDto groupDto)
+        {
+            if (groupDto != null)
+            {
+                return new Group
+                {
+                    GroupId = groupDto.GroupId,
+                    GroupName = groupDto.GroupName,
+                    CustomerId = groupDto.CustomerId
+                };
+            }
+            return null;
+        }
+
     }
 }
