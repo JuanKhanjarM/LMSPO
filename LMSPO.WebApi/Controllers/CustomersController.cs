@@ -53,19 +53,24 @@ namespace LMSPO.WebApi.Controllers
             return Ok(PurchasedProducts);
         }
 
-        [HttpPost("create-group")]
-        public async Task<IActionResult> CreateGroup([FromBody] GroupDto groupDto)
+        [HttpPost("{customerId:int}")]
+        public async Task<IActionResult> CreateGroup(int customerId, [FromBody] GroupDto groupDto)
         {
-            // Validate groupDto and perform any necessary processing
-            // Example: Call a service to create the group
-            GroupDto? createdGroup = await _createGroupUC.ExcecuteAsync(groupDto);
+            if (groupDto == null)
+            {
+                return BadRequest("Invalid group data");
+            }
+
+            // You can add validation logic here to ensure the data is valid
+
+            GroupDto createdGroup = await _createGroupUC.ExcecuteAsync(customerId, groupDto);
 
             if (createdGroup == null)
             {
-                return BadRequest("Failed to create the group.");
+                return BadRequest("Failed to create the group");
             }
 
-            // Return the created group
+            //return CreatedAtAction(nameof(GetGroup), new { customerId, groupId = createdGroup.GroupId }, createdGroup);
             return Ok(createdGroup);
         }
 

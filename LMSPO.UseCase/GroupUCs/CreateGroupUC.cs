@@ -18,17 +18,17 @@ namespace LMSPO.UseCase.GroupUCs
             _groupRepository = groupRepository ?? throw new ArgumentNullException(nameof(groupRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Validate that logger is not null
         }
-        public async Task<GroupDto?> ExcecuteAsync(GroupDto groupDto)
+        public async Task<GroupDto?> ExcecuteAsync( int customerId, GroupDto groupDto)
         {
-            //if (groupDto.CustomerId <= 0)
-            //{
-            //    _logger.LogError("Invalid customerId: {CustomerId}", customerId);
-            //    throw new InvalidCustomerIdException("customerId must be a positive integer.");
-            //}
+            if (customerId <= 0)
+            {
+                _logger.LogError("Invalid customerId: {CustomerId}", customerId);
+                throw new InvalidCustomerIdException("customerId must be a positive integer.");
+            }
 
             try
             {
-                Group? createdGroup = await _groupRepository.CreateGroupAsync(groupDto.ToEntity());
+                Group? createdGroup = await _groupRepository.CreateGroupAsync(customerId, groupDto.ToEntity());
 
                 if (createdGroup == null)
                 {
@@ -40,7 +40,7 @@ namespace LMSPO.UseCase.GroupUCs
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "An error occurred while creating a group for CustomerId: {CustomerId}", customerId);
+                _logger.LogError(ex, "An error occurred while creating a group for CustomerId: {CustomerId}", customerId);
                 throw; // Re-throw the exception for proper error handling higher up the call stack.
             }
         }

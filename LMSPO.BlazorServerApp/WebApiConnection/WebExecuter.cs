@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Azure.Core;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -57,22 +58,52 @@ namespace LMSPO.BlazorServerApp.WebApiConnection
             }
         }
 
-        public async Task<T?> InvokePostAsync<T>(string uri, T data)
+        public async Task<T?> InvokePostAsync<T>(string relativeUrl, T data)
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient(_clientApiName);
-            var json = JsonSerializer.Serialize(data);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsJsonAsync(uri, content);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                throw new HttpRequestException($"Error: {response.StatusCode}");
-            }
+                HttpClient httpClient = _httpClientFactory.CreateClient(_clientApiName);
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(responseContent);
+                // Serialize the request data to JSON
+                var jsonRequest = JsonSerializer.Serialize(data);
+
+                // Create a StringContent with JSON content type
+                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+                // Make HTTP POST request
+                var response = await httpClient.PostAsync(relativeUrl, content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Handle non-success status codes
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        // Handle 404 Not Found
+                        return default; // You can return a default value or null for this case
+                    }
+                    else
+                    {
+                        // Handle other error status codes
+                        throw new HttpRequestException($"Error: {response.StatusCode}");
+                    }
+                }
+
+                return await response.Content.ReadFromJsonAsync<T>();
+            }
+            catch (HttpRequestException ex)
+            {
+                // Handle HTTP request-related exceptions
+                // Log or rethrow as needed
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                // Log or rethrow as needed
+                throw;
+            }
         }
+
 
         public async Task<TResponse?> InvokePutAsync<TRequest, TResponse>(string relativeUrl, TRequest request)
         {

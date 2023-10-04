@@ -4,6 +4,6 @@ namespace LMSPO.UseCase.PluginsInterfaces
 {
     public interface IGroupRepository
     {
-        Task<Group?> CreateGroupAsync(Group group);
+        Task<Group?> CreateGroupAsync(int  customerId, Group group);
     }
 }

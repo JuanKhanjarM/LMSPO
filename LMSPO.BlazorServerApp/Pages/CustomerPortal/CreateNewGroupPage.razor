@@ -1,0 +1,52 @@
+﻿@page "/create-group/{customerId:int}"
+@inject NavigationManager NavigationManager
+@inject IWebExecuter _IWebExecuter
+<div class="card">
+    <div class="card-body">
+        <h3>Welcome: @_customer.CustomerName</h3>
+        <div class="card p-4 mb-2">
+            <h6>Create a group and then Click edit to add Products</h6>
+        </div>
+        <div class="card p-2">
+            <EditForm Model="groupModel" OnValidSubmit="CreateGroupAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="@groupModel.GroupName">Group Name:</label>
+                    <InputText id="@groupModel.GroupId" @bind-Value="@groupModel.GroupName" class="form-control" />
+                    <ValidationMessage For="@(() => @groupModel.GroupName)" />
+                </div>
+
+                <div class="form-group m-2 p-2">
+                    <button type="submit" class="btn btn-success">Create Group</button>
+                </div>
+            </EditForm>
+        </div>
+        @* <!-- Back Button -->
+        <div class="form-group m-2 p-2">
+        <button class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+        </div>*@
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int customerId { get; set; }
+    private CustomerDto? _customer = new CustomerDto();
+    private GroupDto groupModel = new GroupDto();
+    protected override async Task OnInitializedAsync()
+    {
+        _customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/customer/{customerId}");
+    }
+
+    private async Task CreateGroupAsync()
+    {
+        var result = await _IWebExecuter.InvokePostAsync<GroupDto>($"Customers/create-group", groupModel);
+    }
+    private void GoBack()
+    {
+        // Navigate back to the customer page
+        NavigationManager.NavigateTo($"/customer/{_customer.CustomerId}");
+    }
+}

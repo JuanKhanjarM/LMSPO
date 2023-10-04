@@ -1,9 +1,8 @@
 ﻿@page "/customer"
 @page "/customer/{customerId:int}"
 
-
 @inject IWebExecuter _IWebExecuter
-
+@inject NavigationManager NavigationManager
 <div class="container">
     <div class="row">
         <div class="col-md-4">
@@ -91,11 +90,14 @@
 
                     <!-- Button div (bottom right) -->
                     <div style="position: absolute; bottom: 0; right: 0;">
-                        <button class="btn btn-primary" @onclick="CreateGroup">Create Group</button>
+                        <button class="btn btn-primary" @onclick="NewGroup">Create Group</button>
+                    </div>
+                    <div>
+                        <LMSPO.BlazorServerApp.Shared.Controlls.AddNewGroup Group="">
+
+                        </LMSPO.BlazorServerApp.Shared.Controlls.AddNewGroup>
                     </div>
                 </div>
-
-
             }
             else
             {
@@ -129,39 +131,12 @@
             purchasedProductDtos = await _IWebExecuter.InvokeGetTAsync<IEnumerable<PurchasedProductDto>>($"Customers/purchased-products/{customer.CustomerId}");
         }
     }
-    private async Task CreateGroup()
+
+    private void NewGroup()
     {
-        try
-        {
-            // Create a GroupDto object with the required data
-            var groupDto = new GroupDto
-                {
-                    // Set the properties of the GroupDto as needed
-                    GroupName = "YourGroupName",
-                    // Other properties...
-                };
-
-            // Specify the URI for your API endpoint
-            var uri = "Customers/create-group"; // Replace with the actual URI
-
-            // Call the InvokePostAsync method to create the group
-            var response = await _IWebExecuter.InvokePostAsync<GroupDto>(uri, groupDto);
-
-            if (response != null)
-            {
-                // Handle success (e.g., show a success message)
-            }
-            else
-            {
-                // Handle failure (e.g., show an error message)
-            }
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions (e.g., log the exception and show an error message)
-        }
+        // Navigate back to the customer page
+        NavigationManager.NavigateTo($"/create-group/{customerId}");
     }
-
     private void ShowGroupDetails(int groupId)
     {
         selectedGroupId = groupId;

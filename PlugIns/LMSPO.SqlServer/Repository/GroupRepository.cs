@@ -16,7 +16,7 @@ namespace LMSPO.SqlServer.Repository
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
-        public async Task<Group?> CreateGroupAsync(Group group1)
+        public async Task<Group?> CreateGroupAsync(int customerId, Group group1)
         {
             if (string.IsNullOrWhiteSpace(group1.GroupName))
             {
@@ -36,7 +36,7 @@ namespace LMSPO.SqlServer.Repository
                     throw new InvalidOperationException("A group with the same name already exists for this customer.");
                 }
                 // Create a new group
-                var group = new Group(group1.GroupName);
+                var group = new Group(group1.GroupName, customerId);
                 
                 // Add the group to the database
                 _dbContext.Groups.Add(group);
