@@ -1,10 +1,6 @@
-﻿using LMSPO.CoreBusiness.Entities;
-using LMSPO.CrossCut.Dtos;
+﻿using LMSPO.CrossCut.Dtos;
 using LMSPO.UseCase.CustomerUC.CustomerUCInterfaces;
 using LMSPO.UseCase.GroupUCs.GroupUCInterfaces;
-using LMSPO.UseCase.PluginsInterfaces;
-using LMSPO.UseCase.PurchasedProductsUCs.PurchasedProductsUCsInterfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSPO.WebApi.Controllers
@@ -14,21 +10,16 @@ namespace LMSPO.WebApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly IGetCustomerWithGroupsAndProductsUC _getCustomerWithGroupsAndProductsUC;
-        private readonly IGetPurchasedProductsByCustomerIdUC _getPurchasedProductsByCustomerIdUC;
         private readonly ICreateGroupUC _createGroupUC;
         public CustomersController(IGetCustomerWithGroupsAndProductsUC getCustomerWithGroupsAndProductsUC,
-            IGetPurchasedProductsByCustomerIdUC getPurchasedProductsByCustomerIdUC,
             ICreateGroupUC createGroupUC)
         {
             _getCustomerWithGroupsAndProductsUC = getCustomerWithGroupsAndProductsUC ?? throw new ArgumentNullException(nameof(getCustomerWithGroupsAndProductsUC));
-            _getPurchasedProductsByCustomerIdUC = getPurchasedProductsByCustomerIdUC ?? throw new ArgumentNullException(nameof(_getPurchasedProductsByCustomerIdUC));
             _createGroupUC = createGroupUC ?? throw new ArgumentNullException(nameof(createGroupUC));
         }
 
-        //[HttpGet("customer")]
-        ////http://localhost:5047/api/Customers/customer?customerId=1
-        [HttpGet("customer/{customerId:int}")]
-        public async Task< IActionResult> GetCustomer(/*[FromQuery]*/ int customerId)
+        [HttpGet("{customerId:int}")]
+        public async Task< IActionResult> GetCustomer(int customerId)
         {
             CustomerDto? customer =await _getCustomerWithGroupsAndProductsUC.ExecuteAsync(customerId);
 
@@ -39,40 +30,27 @@ namespace LMSPO.WebApi.Controllers
             return Ok(customer);
         }
 
-        //[HttpGet("purchased-products")]
-        ////http://localhost:5047/api/Customers/purchased-products?customerId=1
-        [HttpGet("purchased-products/{customerId:int}")]
-        public async Task<IActionResult> GetCustomersPurchasedProducts(/*[FromQuery]*/ int customerId)
-        {
-            IEnumerable<PurchasedProductDto> PurchasedProducts = await _getPurchasedProductsByCustomerIdUC.ExecuteAsync(customerId);
+       
+        //[HttpPost("{customerId:int}")]
+        //public async Task<IActionResult> CreateGroup(int customerId, [FromBody] GroupDto groupDto)
+        //{
+        //    if (groupDto == null)
+        //    {
+        //        return BadRequest("Invalid group data");
+        //    }
 
-            if (PurchasedProducts == null)
-            {
-                return NotFound();
-            }
-            return Ok(PurchasedProducts);
-        }
+        //    // You can add validation logic here to ensure the data is valid
 
-        [HttpPost("{customerId:int}")]
-        public async Task<IActionResult> CreateGroup(int customerId, [FromBody] GroupDto groupDto)
-        {
-            if (groupDto == null)
-            {
-                return BadRequest("Invalid group data");
-            }
+        //    GroupDto createdGroup = await _createGroupUC.ExcecuteAsync(customerId, groupDto);
 
-            // You can add validation logic here to ensure the data is valid
+        //    if (createdGroup == null)
+        //    {
+        //        return BadRequest("Failed to create the group");
+        //    }
 
-            GroupDto createdGroup = await _createGroupUC.ExcecuteAsync(customerId, groupDto);
-
-            if (createdGroup == null)
-            {
-                return BadRequest("Failed to create the group");
-            }
-
-            //return CreatedAtAction(nameof(GetGroup), new { customerId, groupId = createdGroup.GroupId }, createdGroup);
-            return Ok(createdGroup);
-        }
+        //    //return CreatedAtAction(nameof(GetGroup), new { customerId, groupId = createdGroup.GroupId }, createdGroup);
+        //    return Ok(createdGroup);
+        //}
 
 
 

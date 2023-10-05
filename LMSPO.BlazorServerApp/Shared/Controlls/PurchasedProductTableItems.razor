@@ -1,18 +1,33 @@
-﻿
+﻿@inject IPurchasedProdutsWS _IPurchasedProdutsWS
 <table class="table shadow-sm tableRowFont">
     <tbody>
-        @foreach (var purchasedProductDto in PurchasedProductDtos)
+        @if (PurchasedProductDtos != null)
         {
-            <tr>
-                <td class="col-sm-4">@purchasedProductDto.ProductName</td>
-                <td class="col-sm-3 fw-bold">@purchasedProductDto.ProductPrice</td>
-                <td class="col-sm-3 fw-bold">@purchasedProductDto.PurchasedQty</td>
-            </tr>
+            @foreach (var purchasedProductDto in PurchasedProductDtos)
+            {
+                <tr>
+                    <td class="col-sm-4">@purchasedProductDto.ProductName</td>
+                    <td class="col-sm-3 fw-bold">@purchasedProductDto.ProductPrice</td>
+                    <td class="col-sm-3 fw-bold">@purchasedProductDto.PurchasedQty</td>
+                </tr>
+            }
         }
+        else
+        {
+            <p>No Products...</p>
+        }
+        
     </tbody>
 </table>
 
 @code {
+
     [Parameter]
-    public List<PurchasedProductDto> PurchasedProductDtos { get; set; } = new List<PurchasedProductDto>();
+    public int customerId { get; set;}
+    [Parameter]
+    public IEnumerable<PurchasedProductDto> PurchasedProductDtos { get; set; } = new List<PurchasedProductDto>();
+    protected override async Task  OnParametersSetAsync()
+    {
+        //PurchasedProductDtos = await _IPurchasedProdutsWS.GetPurchasedProductAsync($"{customerId}");
+    }
 }

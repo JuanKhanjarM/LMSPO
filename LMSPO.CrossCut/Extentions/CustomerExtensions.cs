@@ -14,7 +14,7 @@ namespace LMSPO.CrossCut.Extentions
                     CustomerId = customer.CustomerId,
                     CustomerName = customer.CustomerName,
                     TotalSpent = customer.CalculateTotalSpent(),
-                    PurchasedProducts = customer.PurchasedProducts.Select(pp => pp.ToDto()).ToList(),
+                    PurchasedProducts = customer.PurchasedProducts.ToDto().ToList(),
                     Groups = customer.Groups.Select(group => group.ToDto()).ToList()
                 };
             }

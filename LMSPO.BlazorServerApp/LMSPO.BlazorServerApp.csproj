@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LMSPO.ServicecExtention\LMSPO.ServicecExtention.csproj" />
+    <ProjectReference Include="..\LMSPO.CrossCut\LMSPO.CrossCut.csproj" />
   </ItemGroup>
 
 </Project>

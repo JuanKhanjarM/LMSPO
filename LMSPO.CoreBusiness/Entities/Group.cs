@@ -11,7 +11,7 @@ namespace LMSPO.CoreBusiness.Entities
         [Required(ErrorMessage = "Group name is required")]
         public string GroupName { get; set; }
 
-        public string EAN { get; private set; } // Make EAN private set
+        public string EAN { get; private set; } 
 
         public int CustomerId { get; set; }
 

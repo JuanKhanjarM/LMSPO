@@ -1,7 +1,8 @@
 using LMSPO.BlazorServerApp.Areas.Identity;
 using LMSPO.BlazorServerApp.Data;
 using LMSPO.BlazorServerApp.WebApiConnection;
-using LMSPO.ServicecExtention;
+using LMSPO.BlazorServerApp.WebApiConnection.Customers;
+using LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,14 +27,21 @@ namespace LMSPO.BlazorServerApp
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             builder.Services.AddSingleton<WeatherForecastService>();
 
-            builder.Services.AddRegisterServices(builder.Configuration);
             //add httpclinetfactory
-            builder.Services.AddHttpClient("balszorclient", client =>
+            builder.Services.AddHttpClient("PurchasedProducts", client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5047/api/");
+                client.BaseAddress = new Uri("http://localhost:5047/api/PurchasedProducts/");
                 client.DefaultRequestHeaders.Add("Accept","application/json");
             });
-            builder.Services.AddTransient<IWebExecuter, WebExecuter>();    
+            builder.Services.AddTransient<ICustomersWS, CustomersWS>();
+            builder.Services.AddHttpClient("Customers", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5047/api/Customers/");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            builder.Services.AddTransient<IPurchasedProdutsWS, PurchasedProdutsWS>();
+            
+            
 
             var app = builder.Build();
 

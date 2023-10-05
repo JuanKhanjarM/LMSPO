@@ -28,7 +28,7 @@ namespace LMSPO.UseCase.PurchasedProductsUCs
 
             try
             {
-                // Validate that _customerRepository is properly injected and used to retrieve the data.
+
                 IEnumerable<PurchasedProduct>? purchasedProducts = await _purchasedProductRepository.GetPurchasedProductsByCustomerIdAsync(customerId);
 
                 if (purchasedProducts == null)
@@ -36,7 +36,7 @@ namespace LMSPO.UseCase.PurchasedProductsUCs
                     _logger.LogWarning("PurchasedProducts for Customer with ID {CustomerId} not found.", customerId);
                 }
 
-                return purchasedProducts?.ToDto() ?? new List<PurchasedProductDto>();
+                return purchasedProducts.ToDto();
             }
             catch (Exception ex)
             {

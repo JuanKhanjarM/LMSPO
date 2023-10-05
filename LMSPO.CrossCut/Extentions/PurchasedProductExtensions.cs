@@ -13,11 +13,11 @@ namespace LMSPO.CrossCut.Extentions
                 {
                     PurchasedProductId = purchasedProduct.PurchasedProductId,
                     ProductName = purchasedProduct.ProductName,
-                    ProductPrice = purchasedProduct.ProductPrice,
-                    CustomerId = purchasedProduct.CustomerId,
                     PurchasedQty = purchasedProduct.PurchasedQty,
-                    PPInputQty=0,
-                    GetIndividualAddedQuantityForGroupProduct = purchasedProduct.GetIndividualAddedQuantityForGroupProduct()
+                    ProductPrice = purchasedProduct.ProductPrice,
+                    TotalCost= purchasedProduct.CalculateTotalCost(),
+                    CustomerId = purchasedProduct.CustomerId,
+                    PPInputQty =0
                 };
             }
             return new PurchasedProductDto();
@@ -29,13 +29,12 @@ namespace LMSPO.CrossCut.Extentions
             {
                 PurchasedProductId = purchasedProduct.PurchasedProductId,
                 ProductName = purchasedProduct.ProductName.ToUpper(),
-                ProductPrice = purchasedProduct.ProductPrice,
-                CustomerId = purchasedProduct.CustomerId,
-                TotalCost=purchasedProduct.CalculateTotalCost(),
                 PurchasedQty = purchasedProduct.PurchasedQty,
-                TotalAddedQuantity=purchasedProduct.GetTotalAddedQuantity(),
+                ProductPrice = purchasedProduct.ProductPrice,
+                TotalCost = purchasedProduct.CalculateTotalCost(),
+                CustomerId = purchasedProduct.CustomerId,
                 PPInputQty = 0,
-                GetIndividualAddedQuantityForGroupProduct = purchasedProduct.GetIndividualAddedQuantityForGroupProduct()
+                Customer=purchasedProduct.Customer.ToDto()
             });
         }
     }

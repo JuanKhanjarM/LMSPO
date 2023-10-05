@@ -1,6 +1,6 @@
 ﻿@page "/create-group/{customerId:int}"
 @inject NavigationManager NavigationManager
-@inject IWebExecuter _IWebExecuter
+
 <div class="card">
     <div class="card-body">
         <h3>Welcome: @_customer.CustomerName</h3>
@@ -37,12 +37,12 @@
     private GroupDto groupModel = new GroupDto();
     protected override async Task OnInitializedAsync()
     {
-        _customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/customer/{customerId}");
+        //_customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/customer/{customerId}");
     }
 
     private async Task CreateGroupAsync()
     {
-        var result = await _IWebExecuter.InvokePostAsync<GroupDto>($"Customers/create-group", groupModel);
+        //var result = await _IWebExecuter.InvokePostAsync<GroupDto>($"Customers/create-group", groupModel);
     }
     private void GoBack()
     {
