@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSPO.BlazorServerApp", "LM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSPO.ServicecExtention", "LMSPO.ServicecExtention\LMSPO.ServicecExtention.csproj", "{C0C57C8C-5BEC-46A9-A410-71C3AFBDABD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMSPO.Tests", "LMSPO.Tests\LMSPO.Tests.csproj", "{136A4FCE-83A1-4405-9A18-1C98B4702AD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{C0C57C8C-5BEC-46A9-A410-71C3AFBDABD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0C57C8C-5BEC-46A9-A410-71C3AFBDABD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0C57C8C-5BEC-46A9-A410-71C3AFBDABD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136A4FCE-83A1-4405-9A18-1C98B4702AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136A4FCE-83A1-4405-9A18-1C98B4702AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136A4FCE-83A1-4405-9A18-1C98B4702AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136A4FCE-83A1-4405-9A18-1C98B4702AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
