@@ -2,7 +2,6 @@
 using AutoMapper;
 using LMSPO.CoreBusiness.Entities;
 using LMSPO.UseCase.CustomerUC.CustomerUCInterfaces;
-using LMSPO.UseCase.GroupUCs.GroupUCInterfaces;
 using LMSPO.WebApi.Dtos;
 using Microsoft.AspNetCore.Mvc;
 

@@ -27,7 +27,7 @@ namespace LMSPO.CoreBusiness.Entities
         // Constructor to initialize the EAN when creating a new group
         private Group(string groupName ,int customerId )
         {
-            GroupName = groupName;
+            GroupName = groupName.ToUpper();
             CustomerId = customerId;
             GenerateEAN(); // Generate EAN upon creation
         }

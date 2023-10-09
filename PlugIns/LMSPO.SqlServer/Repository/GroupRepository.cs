@@ -45,6 +45,32 @@ namespace LMSPO.SqlServer.Repository
                 return Newgroup;
             }
         }
+
+        public async Task<IEnumerable<Group>> GetAllGroupsByCustomerIdAsync(int customerId)
+        {
+            using (LMSDbContext _dbContext = _dbContextFactory.CreateDbContext())
+            {
+                var groups = await _dbContext.Groups
+                    .Include(g => g.GroupProducts)
+                    .Where(g => g.CustomerId == customerId)
+                    .ToListAsync();
+
+                return groups;
+            }
+        }
+
+        public async Task<Group?> GetGroupByIdAndCustomerIdAsync(int customerId, int groupId)
+        {
+            using (LMSDbContext _dbContext = _dbContextFactory.CreateDbContext())
+            {
+                var group = await _dbContext.Groups
+                    .Include(g => g.GroupProducts)
+                    .Where(g => g.GroupId == groupId && g.CustomerId == customerId)
+                    .FirstOrDefaultAsync();
+
+                return group;
+            }
+        }
         // Helper method to generate EAN based on the specified format
         //private string GenerateEAN(string groupName)
         //{
