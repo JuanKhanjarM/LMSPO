@@ -32,8 +32,9 @@ namespace LMSPO.ServicecExtention
             services.AddTransient<IGetGroupByIdAndCustomerIdUC, GetGroupByIdAndCustomerIdUC>();
             services.AddTransient<IDeleteGroupByIdAndCustomerIdUC, DeleteGroupByIdAndCustomerIdUC>();
             services.AddTransient<IDeleteSelectedGroupProductsUC, DeleteSelectedGroupProductsUC>();
+            services.AddTransient<IAddGroupProductsToGroupUC, AddGroupProductsToGroupUC>();
 
-
+            
             //services.AddTransient<IUpdateGroupNameUC, UpdateGroupNameUC>();
             //services.AddTransient<IDeleteGroupWithProductsUC, DeleteGroupWithProductsUC>();
             //services.AddTransient<IAddPurchasedQtysToGroupProductsUC, AddPurchasedQtysToGroupProductsUC>();

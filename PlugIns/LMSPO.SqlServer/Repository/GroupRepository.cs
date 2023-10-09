@@ -31,16 +31,28 @@ namespace LMSPO.SqlServer.Repository
                     return false; // Group not found
                 }
 
-                // Add each GroupProduct to the group's collection
                 foreach (var groupProduct in groupProducts)
                 {
-                    group.GroupProducts.Add(groupProduct);
+                    // Check if a GroupProduct with the same PurchasedProductId already exists in the Group's collection
+                    GroupProduct existingGroupProduct = group.GroupProducts
+                        .FirstOrDefault(gp => gp.PurchasedProductId == groupProduct.PurchasedProductId);
+
+                    if (existingGroupProduct != null)
+                    {
+                        // If it exists, increase the AddedQuantity
+                        existingGroupProduct.AddedQuantity += groupProduct.AddedQuantity;
+                    }
+                    else
+                    {
+                        // If it doesn't exist, add the new GroupProduct to the collection
+                        group.GroupProducts.Add(groupProduct);
+                    }
                 }
 
-                // Save changes to persist the additions
+                // Save changes to persist the additions or updates
                 await dbContext.SaveChangesAsync();
 
-                return true; // Additions successful
+                return true; // Additions or updates successful
             }
         }
 
