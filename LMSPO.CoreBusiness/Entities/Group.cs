@@ -27,6 +27,10 @@ namespace LMSPO.CoreBusiness.Entities
         // Constructor to initialize the EAN when creating a new group
         private Group(string groupName ,int customerId )
         {
+            if (string.IsNullOrWhiteSpace(groupName))
+            {
+                throw new ArgumentException("Group name cannot be null or empty.", nameof(groupName));
+            }
             GroupName = groupName.ToUpper();
             CustomerId = customerId;
             GenerateEAN(); // Generate EAN upon creation

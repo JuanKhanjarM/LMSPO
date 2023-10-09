@@ -33,7 +33,7 @@ namespace LMSPO.SqlServer.Repository
                 if (groupExists)
                 {
                     _logger.LogError("Group with the same name already exists for customer.");
-                    throw new InvalidOperationException("A group with the same name already exists for this customer.");
+                    throw new InvalidOperationException($"A group with the same name already exists for customer with Id: {customerId}");
                 }
                 // Create a new group
                 var Newgroup = Group.CreateNewGroup(group.GroupName, customerId);
@@ -43,6 +43,68 @@ namespace LMSPO.SqlServer.Repository
                 await _dbContext.SaveChangesAsync();
 
                 return Newgroup;
+            }
+        }
+
+        public async Task<bool> DeleteGroupByIdAndCustomerIdAsync(int customerId,int groupId)
+        {
+            using (LMSDbContext dbContext = _dbContextFactory.CreateDbContext())
+            {
+                // Retrieve the group by GroupId and CustomerId
+                Group? groupToDelete = await dbContext.Groups
+                    .Include(g => g.GroupProducts)
+                    .FirstOrDefaultAsync(g => g.GroupId == groupId && g.CustomerId == customerId);
+
+                if (groupToDelete == null)
+                {
+                    return false; // Group not found
+                }
+
+                // Remove the group and its associated GroupProduct entries
+                if (groupToDelete.GroupProducts != null)
+                {
+                    dbContext.GroupProducts.RemoveRange(groupToDelete.GroupProducts);
+                }
+                
+                dbContext.Groups.Remove(groupToDelete);
+
+                await dbContext.SaveChangesAsync();
+
+                return true; // Group deleted successfully
+            }
+        }
+
+        public async Task<bool> DeleteSelectedGroupProductsAsync(int groupId, List<int> selectedGroupProductIds)
+        {
+            using (LMSDbContext dbContext = _dbContextFactory.CreateDbContext())
+            {
+                // Retrieve the group by groupId
+                Group? group = await dbContext.Groups
+                    .Include(g => g.GroupProducts)
+                    .FirstOrDefaultAsync(g => g.GroupId == groupId);
+
+                if (group == null)
+                {
+                    return false; // Group not found
+                }
+
+                // Iterate through the selected GroupProductIds
+                foreach (int groupProductId in selectedGroupProductIds)
+                {
+                    // Find the GroupProduct in the group's collection by its id
+                    GroupProduct? groupProductToDelete = group.GroupProducts.FirstOrDefault(gp => gp.PurchasedProductId == groupProductId);
+
+                    if (groupProductToDelete != null)
+                    {
+                        // Remove the GroupProduct from the group
+                        group.GroupProducts.Remove(groupProductToDelete);
+                    }
+                }
+
+                // Save changes to persist the deletions
+                await dbContext.SaveChangesAsync();
+
+                return true; // Deletions successful
             }
         }
 

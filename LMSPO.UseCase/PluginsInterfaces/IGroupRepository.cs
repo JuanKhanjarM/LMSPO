@@ -7,5 +7,7 @@ namespace LMSPO.UseCase.PluginsInterfaces
         Task<Group?> CreateGroupAsync(int  customerId, Group group);
         Task<IEnumerable<Group>> GetAllGroupsByCustomerIdAsync(int customerId);
         Task<Group?> GetGroupByIdAndCustomerIdAsync(int customerId,int groupId);
+        Task<bool> DeleteGroupByIdAndCustomerIdAsync(int customerId,int groupId);
+        Task<bool> DeleteSelectedGroupProductsAsync(int groupId, List<int> selectedGroupProductIds);
     }
 }
