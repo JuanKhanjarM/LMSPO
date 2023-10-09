@@ -14,7 +14,7 @@ namespace LMSPO.WebApi.Dtos
         [JsonPropertyName("Number Of Groups")]
         public int TotalGroups { get; set; }
 
-        [JsonPropertyName("Total Group")]
+        [JsonPropertyName("Total/kr.")]
         public decimal TotalGroupSpent { get; set; }
 
         [JsonPropertyName("Purchased Products")]

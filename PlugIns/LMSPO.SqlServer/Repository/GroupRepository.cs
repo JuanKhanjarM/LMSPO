@@ -16,6 +16,34 @@ namespace LMSPO.SqlServer.Repository
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
+
+        public async Task<bool> AddGroupProductsToGroupAsync(int groupId, List<GroupProduct> groupProducts)
+        {
+            using (LMSDbContext dbContext = _dbContextFactory.CreateDbContext())
+            {
+                // Retrieve the group by groupId
+                Group? group = await dbContext.Groups
+                    .Include(g => g.GroupProducts)
+                    .FirstOrDefaultAsync(g => g.GroupId == groupId);
+
+                if (group == null)
+                {
+                    return false; // Group not found
+                }
+
+                // Add each GroupProduct to the group's collection
+                foreach (var groupProduct in groupProducts)
+                {
+                    group.GroupProducts.Add(groupProduct);
+                }
+
+                // Save changes to persist the additions
+                await dbContext.SaveChangesAsync();
+
+                return true; // Additions successful
+            }
+        }
+
         public async Task<Group?> CreateGroupAsync(int customerId, Group group)
         {
             if (string.IsNullOrWhiteSpace(group.GroupName))
