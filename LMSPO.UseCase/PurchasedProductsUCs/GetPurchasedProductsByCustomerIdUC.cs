@@ -1,6 +1,4 @@
 ﻿using LMSPO.CoreBusiness.Entities;
-using LMSPO.CrossCut.Dtos;
-using LMSPO.CrossCut.Extentions;
 using LMSPO.UseCase.Exceptions;
 using LMSPO.UseCase.PluginsInterfaces;
 using LMSPO.UseCase.PurchasedProductsUCs.PurchasedProductsUCsInterfaces;
@@ -18,7 +16,7 @@ namespace LMSPO.UseCase.PurchasedProductsUCs
             _purchasedProductRepository = purchasedProductRepository ?? throw new ArgumentNullException(nameof(purchasedProductRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
         }
-        public async Task<IEnumerable<PurchasedProductDto>> ExecuteAsync(int customerId)
+        public async Task<IEnumerable<PurchasedProduct>> ExecuteAsync(int customerId)
         {
             if (customerId <= 0)
             {
@@ -34,9 +32,10 @@ namespace LMSPO.UseCase.PurchasedProductsUCs
                 if (purchasedProducts == null)
                 {
                     _logger.LogWarning("PurchasedProducts for Customer with ID {CustomerId} not found.", customerId);
+                    return new List<PurchasedProduct>();
                 }
 
-                return purchasedProducts.ToDto();
+                return purchasedProducts;
             }
             catch (Exception ex)
             {

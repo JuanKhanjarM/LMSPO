@@ -1,6 +1,5 @@
-﻿using LMSPO.CoreBusiness.Entities;
-
-namespace LMSPO.CrossCut.Dtos
+﻿
+namespace LMSPO.WebApi.Dtos
 {
     public class PurchasedProductDto
     {
@@ -11,6 +10,5 @@ namespace LMSPO.CrossCut.Dtos
         public decimal TotalCost { get; set; }
         public int CustomerId { get; set; }
         public int PPInputQty { get; set; }
-        public CustomerDto? Customer { get; set; }
     }
 }

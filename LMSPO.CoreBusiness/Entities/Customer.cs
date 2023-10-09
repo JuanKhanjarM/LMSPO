@@ -26,6 +26,10 @@ namespace LMSPO.CoreBusiness.Entities
         {
             return PurchasedProducts.Sum(pp => pp.CalculateTotalCost());
         }
+        public decimal CalculateTotalCostForGroup()
+        {
+            return Groups.Sum(pp => pp.CalculateTotalPrice());
+        }
 
         // Method to add a purchased product to the customer's list
         public void AddPurchasedProduct(PurchasedProduct purchasedProduct)

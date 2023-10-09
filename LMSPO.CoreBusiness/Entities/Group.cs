@@ -25,13 +25,17 @@ namespace LMSPO.CoreBusiness.Entities
         }
 
         // Constructor to initialize the EAN when creating a new group
-        public Group(string groupName ,int customerId )
+        private Group(string groupName ,int customerId )
         {
             GroupName = groupName;
             CustomerId = customerId;
             GenerateEAN(); // Generate EAN upon creation
         }
-
+        // Factory method to create a new group with auto-generated EAN
+        public static Group CreateNewGroup(string groupName, int customerId)
+        {
+            return new Group(groupName, customerId);
+        }
         // Method to calculate the total price for all group products within the group
         public decimal CalculateTotalPrice()
         {

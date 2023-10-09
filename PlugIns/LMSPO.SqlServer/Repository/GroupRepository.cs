@@ -16,19 +16,19 @@ namespace LMSPO.SqlServer.Repository
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
-        public async Task<Group?> CreateGroupAsync(int customerId, Group group1)
+        public async Task<Group?> CreateGroupAsync(int customerId, Group group)
         {
-            if (string.IsNullOrWhiteSpace(group1.GroupName))
+            if (string.IsNullOrWhiteSpace(group.GroupName))
             {
                 _logger.LogError("Invalid group name provided.");
-                throw new ArgumentException("Group name is required.", nameof(group1.GroupName));
+                throw new ArgumentException("Group name is required.", nameof(group.GroupName));
             }
 
             using (LMSDbContext _dbContext = _dbContextFactory.CreateDbContext())
             {
                 // Check if a group with the same name already exists for the customer
                 bool groupExists = await _dbContext.Groups
-                    .AnyAsync(g => g.CustomerId == group1.CustomerId && g.GroupName.Equals(group1.GroupName));
+                    .AnyAsync(g => g.CustomerId == customerId && g.GroupName.Equals(group.GroupName));
 
                 if (groupExists)
                 {
@@ -36,13 +36,13 @@ namespace LMSPO.SqlServer.Repository
                     throw new InvalidOperationException("A group with the same name already exists for this customer.");
                 }
                 // Create a new group
-                var group = new Group(group1.GroupName, customerId);
+                var Newgroup = Group.CreateNewGroup(group.GroupName, customerId);
                 
                 // Add the group to the database
-                _dbContext.Groups.Add(group);
+                _dbContext.Groups.Add(Newgroup);
                 await _dbContext.SaveChangesAsync();
 
-                return group;
+                return Newgroup;
             }
         }
         // Helper method to generate EAN based on the specified format

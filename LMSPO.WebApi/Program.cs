@@ -14,6 +14,7 @@ namespace LMSPO.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddRegisterServices(builder.Configuration);
+            builder.Services.AddAutoMapper(typeof(Program));
 
             var app = builder.Build();
 

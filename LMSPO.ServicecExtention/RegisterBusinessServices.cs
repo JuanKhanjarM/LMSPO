@@ -10,7 +10,7 @@ using LMSPO.UseCase.PurchasedProductsUCs.PurchasedProductsUCsInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using AutoMapper;
 namespace LMSPO.ServicecExtention
 {
     public static class RegisterBusinessServices
@@ -31,6 +31,15 @@ namespace LMSPO.ServicecExtention
             //services.AddTransient<IUpdateGroupNameUC, UpdateGroupNameUC>();
             //services.AddTransient<IDeleteGroupWithProductsUC, DeleteGroupWithProductsUC>();
             //services.AddTransient<IAddPurchasedQtysToGroupProductsUC, AddPurchasedQtysToGroupProductsUC>();
+
+            //// Auto Mapper Configurations
+            //var mapperConfig = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(typeof(MappingProfile));
+            //});
+
+            //IMapper mapper = mapperConfig.CreateMapper();
+            //services.AddSingleton(mapper);
         }
     }
 }

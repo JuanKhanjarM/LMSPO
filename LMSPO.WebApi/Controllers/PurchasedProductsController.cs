@@ -1,5 +1,7 @@
-﻿using LMSPO.CrossCut.Dtos;
+﻿using AutoMapper;
+using LMSPO.CoreBusiness.Entities;
 using LMSPO.UseCase.PurchasedProductsUCs.PurchasedProductsUCsInterfaces;
+using LMSPO.WebApi.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSPO.WebApi.Controllers
@@ -8,23 +10,25 @@ namespace LMSPO.WebApi.Controllers
     [ApiController]
     public class PurchasedProductsController : ControllerBase
     {
+        private IMapper _mapper;
         private readonly IGetPurchasedProductsByCustomerIdUC _getPurchasedProductsByCustomerIdUC;
 
-        public PurchasedProductsController(IGetPurchasedProductsByCustomerIdUC getPurchasedProductsByCustomerIdUC)
+        public PurchasedProductsController(IGetPurchasedProductsByCustomerIdUC getPurchasedProductsByCustomerIdUC, IMapper mapper)
         {
             _getPurchasedProductsByCustomerIdUC = getPurchasedProductsByCustomerIdUC;
+            _mapper = mapper;
         }
 
         [HttpGet("{customerId:int}")]
         public async Task<IActionResult> GetCustomersPurchasedProducts(int customerId)
         {
-            IEnumerable<PurchasedProductDto> PurchasedProducts = await _getPurchasedProductsByCustomerIdUC.ExecuteAsync(customerId);
+            IEnumerable<PurchasedProduct> PurchasedProducts = await _getPurchasedProductsByCustomerIdUC.ExecuteAsync(customerId);
 
             if (PurchasedProducts == null)
             {
                 return NotFound();
             }
-            return Ok(PurchasedProducts);
+            return Ok(_mapper.Map<IEnumerable<PurchasedProductDto>>(PurchasedProducts));
         }
         //[HttpPost]
         //public async Task<IActionResult> CreatePurchasedProduct([FromBody] PurchasedProductDto purchasedProduct)

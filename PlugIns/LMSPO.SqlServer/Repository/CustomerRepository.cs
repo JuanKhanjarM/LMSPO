@@ -25,30 +25,20 @@ namespace LMSPO.SqlServer.Repository
             using LMSDbContext _dbContext = _dbContextFactory.CreateDbContext();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+
             var customer = await _dbContext.Customers
                 .Include(c => c.Groups)
-                .ThenInclude(g => g.GroupProducts)
-                .ThenInclude(gp => gp.PurchasedProduct)
-                .Where(c => c.CustomerId == customerId)
-                .Select(c => new Customer
-                {
-                    CustomerId = c.CustomerId,
-                    CustomerName = c.CustomerName,
-                    Groups = c.Groups.Select(g => new Group
-                    {
-                        GroupId = g.GroupId,
-                        GroupName = g.GroupName,
-                        GroupProducts = g.GroupProducts
-                            .Where(gp => gp.AddedQuantity > 0)
-                            .ToList()
-                    }).ToList()
-                })
-                .FirstOrDefaultAsync();
+                .ThenInclude(gp => gp.GroupProducts)
+                .Include(c => c.PurchasedProducts)
+                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+
             stopwatch.Stop();
+
             // Get the elapsed time
             TimeSpan elapsedTime = stopwatch.Elapsed;
 
             Console.WriteLine($"Method execution time: {elapsedTime}");
+
             return customer;
         }
     }

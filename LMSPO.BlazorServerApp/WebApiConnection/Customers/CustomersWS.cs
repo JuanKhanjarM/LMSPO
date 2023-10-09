@@ -1,5 +1,4 @@
-﻿using LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts;
-using LMSPO.CrossCut.Dtos;
+﻿using LMSPO.BlazorServerApp.ViewModels;
 using System.Text.Json;
 
 namespace LMSPO.BlazorServerApp.WebApiConnection.Customers

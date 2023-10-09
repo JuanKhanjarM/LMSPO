@@ -1,4 +1,4 @@
-﻿namespace LMSPO.CrossCut.Dtos
+﻿namespace LMSPO.BlazorServerApp.ViewModels
 {
     public class GroupDto
     {

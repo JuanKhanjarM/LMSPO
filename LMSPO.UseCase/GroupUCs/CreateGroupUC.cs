@@ -1,6 +1,4 @@
 ﻿using LMSPO.CoreBusiness.Entities;
-using LMSPO.CrossCut.Dtos;
-using LMSPO.CrossCut.Extentions;
 using LMSPO.UseCase.Exceptions;
 using LMSPO.UseCase.GroupUCs.GroupUCInterfaces;
 using LMSPO.UseCase.PluginsInterfaces;
@@ -18,7 +16,7 @@ namespace LMSPO.UseCase.GroupUCs
             _groupRepository = groupRepository ?? throw new ArgumentNullException(nameof(groupRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger)); // Validate that logger is not null
         }
-        public async Task<GroupDto?> ExcecuteAsync( int customerId, GroupDto groupDto)
+        public async Task<Group?> ExcecuteAsync( int customerId, Group group)
         {
             if (customerId <= 0)
             {
@@ -28,7 +26,7 @@ namespace LMSPO.UseCase.GroupUCs
 
             try
             {
-                Group? createdGroup = await _groupRepository.CreateGroupAsync(customerId, groupDto.ToEntity());
+                Group? createdGroup = await _groupRepository.CreateGroupAsync(customerId, group);
 
                 if (createdGroup == null)
                 {
@@ -36,7 +34,7 @@ namespace LMSPO.UseCase.GroupUCs
                     //throw new GroupCreationException("Failed to create a new group.");
                 }
 
-                return createdGroup.ToDto();
+                return createdGroup;
             }
             catch (Exception ex)
             {

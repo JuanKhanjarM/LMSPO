@@ -1,5 +1,4 @@
-﻿using LMSPO.CrossCut.Dtos;
-using LMSPO.CrossCut.Extentions;
+﻿using LMSPO.CoreBusiness.Entities;
 using LMSPO.UseCase.CustomerUC.CustomerUCInterfaces;
 using LMSPO.UseCase.Exceptions;
 using LMSPO.UseCase.PluginsInterfaces;
@@ -19,7 +18,7 @@ namespace LMSPO.UseCase.CustomerUC
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<CustomerDto?> ExecuteAsync(int customerId)
+        public async Task<Customer?> ExecuteAsync(int customerId)
         {
             if (customerId <= 0)
             {
@@ -38,7 +37,7 @@ namespace LMSPO.UseCase.CustomerUC
                     throw new CustomerNotFoundException($"Customer with ID {customerId} not found.");
                 }
 
-                return customer.ToDto();
+                return customer;
             }
             catch (Exception ex)
             {

@@ -1,6 +1,9 @@
-﻿using LMSPO.CrossCut.Dtos;
+﻿
+using AutoMapper;
+using LMSPO.CoreBusiness.Entities;
 using LMSPO.UseCase.CustomerUC.CustomerUCInterfaces;
 using LMSPO.UseCase.GroupUCs.GroupUCInterfaces;
+using LMSPO.WebApi.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSPO.WebApi.Controllers
@@ -10,49 +13,28 @@ namespace LMSPO.WebApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly IGetCustomerWithGroupsAndProductsUC _getCustomerWithGroupsAndProductsUC;
-        private readonly ICreateGroupUC _createGroupUC;
+        
+        private IMapper mapper;
         public CustomersController(IGetCustomerWithGroupsAndProductsUC getCustomerWithGroupsAndProductsUC,
-            ICreateGroupUC createGroupUC)
+            IMapper mapper)
         {
             _getCustomerWithGroupsAndProductsUC = getCustomerWithGroupsAndProductsUC ?? throw new ArgumentNullException(nameof(getCustomerWithGroupsAndProductsUC));
-            _createGroupUC = createGroupUC ?? throw new ArgumentNullException(nameof(createGroupUC));
+           
+            this.mapper = mapper;
         }
 
         [HttpGet("{customerId:int}")]
         public async Task< IActionResult> GetCustomer(int customerId)
         {
-            CustomerDto? customer =await _getCustomerWithGroupsAndProductsUC.ExecuteAsync(customerId);
+            Customer? customer =await _getCustomerWithGroupsAndProductsUC.ExecuteAsync(customerId);
+
 
             if (customer == null)
             {
                 return NotFound();
             }
-            return Ok(customer);
+            return Ok(mapper.Map<CustomerDto>(customer));
         }
-
-       
-        //[HttpPost("{customerId:int}")]
-        //public async Task<IActionResult> CreateGroup(int customerId, [FromBody] GroupDto groupDto)
-        //{
-        //    if (groupDto == null)
-        //    {
-        //        return BadRequest("Invalid group data");
-        //    }
-
-        //    // You can add validation logic here to ensure the data is valid
-
-        //    GroupDto createdGroup = await _createGroupUC.ExcecuteAsync(customerId, groupDto);
-
-        //    if (createdGroup == null)
-        //    {
-        //        return BadRequest("Failed to create the group");
-        //    }
-
-        //    //return CreatedAtAction(nameof(GetGroup), new { customerId, groupId = createdGroup.GroupId }, createdGroup);
-        //    return Ok(createdGroup);
-        //}
-
-
 
         //[HttpPut("customer/{customerId:int}")]
         //public async Task<IActionResult> UpdateGroupProduct(int customerId, [FromBody] CustomerDto customerDto)

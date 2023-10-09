@@ -1,4 +1,4 @@
-﻿using LMSPO.CrossCut.Dtos;
+﻿using LMSPO.BlazorServerApp.ViewModels;
 using Microsoft.AspNetCore.Components;
 
 namespace LMSPO.BlazorServerApp.Shared.Controlls

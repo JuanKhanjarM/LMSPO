@@ -18,7 +18,7 @@ namespace LMSPO.SqlServer.Repository
             _dbContextFactory = dbContextFactory;
             _logger = logger;
         }
-        public async Task<IEnumerable<PurchasedProduct>?> GetPurchasedProductsByCustomerIdAsync(int customerId)
+        public async Task<IEnumerable<PurchasedProduct>> GetPurchasedProductsByCustomerIdAsync(int customerId)
         {
             if (customerId <= 0)
             {
