@@ -3,10 +3,12 @@ using AutoMapper;
 using LMSPO.CoreBusiness.Entities;
 using LMSPO.UseCase.CustomerUC.CustomerUCInterfaces;
 using LMSPO.WebApi.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMSPO.WebApi.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
