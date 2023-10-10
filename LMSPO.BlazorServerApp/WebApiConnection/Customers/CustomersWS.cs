@@ -28,8 +28,8 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
                     using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
                     try
                     {
-                        var customers = await JsonSerializer.DeserializeAsync<CustomerDto>(responseStream);
-                        return customers;
+                        var customer = await JsonSerializer.DeserializeAsync<CustomerDto>(responseStream);
+                        return customer;
                     }
                     catch (JsonException ex)
                     {

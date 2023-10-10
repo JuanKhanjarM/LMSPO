@@ -1,11 +1,21 @@
-﻿namespace LMSPO.BlazorServerApp.ViewModels
+﻿using System.Text.Json.Serialization;
+
+namespace LMSPO.BlazorServerApp.ViewModels
 {
     public class CustomerDto
     {
         public int CustomerId { get; set; }
+
         public string CustomerName { get; set; }
+
         public decimal TotalSpent { get; set; }
-        public List<PurchasedProductDto> PurchasedProducts { get; set; } = new List<PurchasedProductDto>();
+
+        public int TotalGroups { get; set; }
+
+        public decimal TotalGroupSpent { get; set; }
+
+        public List<PurchasedProductDto> PurchasedProducts { get; set; }=new List<PurchasedProductDto>();
+
         public List<GroupDto> Groups { get; set; } = new List<GroupDto>();
     }
 }

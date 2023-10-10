@@ -10,6 +10,5 @@ namespace LMSPO.BlazorServerApp.ViewModels
         public decimal TotalCost { get; set; }
         public int CustomerId { get; set; }
         public int PPInputQty { get; set; }
-        public CustomerDto? Customer { get; set; }
     }
 }

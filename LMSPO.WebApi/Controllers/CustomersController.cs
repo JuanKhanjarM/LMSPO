@@ -8,20 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LMSPO.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
         private readonly IGetCustomerWithGroupsAndProductsUC _getCustomerWithGroupsAndProductsUC;
         
-        private IMapper mapper;
+        private readonly IMapper _mapper;
         public CustomersController(IGetCustomerWithGroupsAndProductsUC getCustomerWithGroupsAndProductsUC,
             IMapper mapper)
         {
             _getCustomerWithGroupsAndProductsUC = getCustomerWithGroupsAndProductsUC ?? throw new ArgumentNullException(nameof(getCustomerWithGroupsAndProductsUC));
            
-            this.mapper = mapper;
+            this._mapper = mapper;
         }
 
         [HttpGet("{customerId:int}")]
@@ -34,7 +34,7 @@ namespace LMSPO.WebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(mapper.Map<CustomerDto>(customer));
+            return Ok(_mapper.Map<CustomerDto>(customer));
         }
 
         //[HttpPut("customer/{customerId:int}")]

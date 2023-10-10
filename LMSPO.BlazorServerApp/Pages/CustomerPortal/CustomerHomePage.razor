@@ -93,7 +93,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        customer = await _ICustomersWS.GetCustomerAsync($"{customerId}");
+        customer = await _ICustomersWS.GetCustomerAsync($"Customers/{customerId}");
         if (customer!=null)
         {
             purchasedProductDtos = customer.PurchasedProducts.ToList();

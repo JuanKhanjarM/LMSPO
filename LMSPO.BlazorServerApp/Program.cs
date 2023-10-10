@@ -28,20 +28,23 @@ namespace LMSPO.BlazorServerApp
             builder.Services.AddSingleton<WeatherForecastService>();
 
             //add httpclinetfactory
+            builder.Services.AddHttpClient("Customers", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5047/api/");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            builder.Services.AddTransient<ICustomersWS, CustomersWS>();
+            
+
             builder.Services.AddHttpClient("PurchasedProducts", client =>
             {
                 client.BaseAddress = new Uri("http://localhost:5047/api/PurchasedProducts/");
                 client.DefaultRequestHeaders.Add("Accept","application/json");
             });
-            builder.Services.AddTransient<ICustomersWS, CustomersWS>();
-            builder.Services.AddHttpClient("Customers", client =>
-            {
-                client.BaseAddress = new Uri("http://localhost:5047/api/Customers/");
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
             builder.Services.AddTransient<IPurchasedProdutsWS, PurchasedProdutsWS>();
-            
-            
+
+
+
 
             var app = builder.Build();
 
