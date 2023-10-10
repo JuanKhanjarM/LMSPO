@@ -28,7 +28,7 @@ namespace LMSPO.SqlServer.Repository
 
                 if (group == null)
                 {
-                    return false; // Group not found
+                    return false;
                 }
 
                 foreach (var groupProduct in groupProducts)
@@ -37,15 +37,21 @@ namespace LMSPO.SqlServer.Repository
                     GroupProduct existingGroupProduct = group.GroupProducts
                         .FirstOrDefault(gp => gp.PurchasedProductId == groupProduct.PurchasedProductId);
 
+                    PurchasedProduct purchasedProduct = await dbContext.PurchasedProducts
+                        .FirstOrDefaultAsync(pp => pp.PurchasedProductId == existingGroupProduct.PurchasedProductId);
                     if (existingGroupProduct != null)
                     {
                         // If it exists, increase the AddedQuantity
+                    
+
                         existingGroupProduct.AddedQuantity += groupProduct.AddedQuantity;
+                        purchasedProduct.PurchasedQty -= groupProduct.AddedQuantity;
                     }
                     else
                     {
                         // If it doesn't exist, add the new GroupProduct to the collection
                         group.GroupProducts.Add(groupProduct);
+                        purchasedProduct.PurchasedQty -= groupProduct.AddedQuantity;
                     }
                 }
 
@@ -77,7 +83,7 @@ namespace LMSPO.SqlServer.Repository
                 }
                 // Create a new group
                 var Newgroup = Group.CreateNewGroup(group.GroupName, customerId);
-                
+
                 // Add the group to the database
                 _dbContext.Groups.Add(Newgroup);
                 await _dbContext.SaveChangesAsync();
@@ -86,7 +92,7 @@ namespace LMSPO.SqlServer.Repository
             }
         }
 
-        public async Task<bool> DeleteGroupByIdAndCustomerIdAsync(int customerId,int groupId)
+        public async Task<bool> DeleteGroupByIdAndCustomerIdAsync(int customerId, int groupId)
         {
             using (LMSDbContext dbContext = _dbContextFactory.CreateDbContext())
             {
@@ -100,17 +106,18 @@ namespace LMSPO.SqlServer.Repository
                     return false; // Group not found
                 }
 
+                // tod do + - the purchased Products Qty
                 // Remove the group and its associated GroupProduct entries
                 if (groupToDelete.GroupProducts != null)
                 {
                     dbContext.GroupProducts.RemoveRange(groupToDelete.GroupProducts);
                 }
-                
+
                 dbContext.Groups.Remove(groupToDelete);
 
                 await dbContext.SaveChangesAsync();
 
-                return true; // Group deleted successfully
+                return true;
             }
         }
 
@@ -136,6 +143,7 @@ namespace LMSPO.SqlServer.Repository
 
                     if (groupProductToDelete != null)
                     {
+                        // tod do + - the purchased Products Qty
                         // Remove the GroupProduct from the group
                         group.GroupProducts.Remove(groupProductToDelete);
                     }
@@ -166,8 +174,8 @@ namespace LMSPO.SqlServer.Repository
             using (LMSDbContext _dbContext = _dbContextFactory.CreateDbContext())
             {
                 var group = await _dbContext.Groups
-                    .Include(g => g.GroupProducts)
-                    .Where(g => g.GroupId == groupId && g.CustomerId == customerId)
+                    .Include(g => g.GroupProducts).ThenInclude(pp => pp.PurchasedProduct)
+                    .Where(g => g.CustomerId == customerId && g.GroupId == groupId)
                     .FirstOrDefaultAsync();
 
                 return group;

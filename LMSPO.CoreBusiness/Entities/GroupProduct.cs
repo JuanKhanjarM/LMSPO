@@ -19,7 +19,7 @@ namespace LMSPO.CoreBusiness.Entities
         public virtual Group? Group { get; set; }
 
         [ForeignKey(nameof(PurchasedProductId))]
-        public virtual PurchasedProduct? PurchasedProduct { get; set; }
+        public virtual PurchasedProduct? PurchasedProduct { get; set; }=new();
 
         // Method to calculate the subtotal for the group product
         public decimal CalculateSubtotal()

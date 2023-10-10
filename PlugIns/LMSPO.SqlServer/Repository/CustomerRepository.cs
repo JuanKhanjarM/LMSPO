@@ -30,7 +30,7 @@ namespace LMSPO.SqlServer.Repository
                 .Include(c => c.Groups)
                 .ThenInclude(gp => gp.GroupProducts)
                 .Include(c => c.PurchasedProducts)
-                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+                .Where(c => c.CustomerId == customerId).FirstOrDefaultAsync();
 
             stopwatch.Stop();
 

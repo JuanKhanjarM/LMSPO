@@ -13,11 +13,12 @@ namespace LMSPO.WebApi.Dtos
 
         public int CustomerId { get; set; }
 
-        [JsonPropertyName("SubTotal/kr.")]
+        [JsonPropertyName("Total/kr.")]
         public decimal TotalPrice { get; set; }
 
+       // public string FirstGroupProductName { get; set; }
         [JsonPropertyName("Group's Producs")]
-        public List<GroupProductDto> GroupProductDto { get; set; } = new List<GroupProductDto>();
+        public List<GroupProductDto> GroupProducts { get; set; } = new List<GroupProductDto>();
     }
 
 }

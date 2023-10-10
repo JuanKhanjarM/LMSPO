@@ -1,4 +1,5 @@
 using LMSPO.ServicecExtention;
+using LMSPO.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -17,6 +18,7 @@ namespace LMSPO.WebApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddRegisterServices(builder.Configuration);
             builder.Services.AddAutoMapper(typeof(Program));
             // Configure authentication with JWT

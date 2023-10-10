@@ -17,7 +17,7 @@ namespace LMSPO.UseCase.GroupUCs
         }
         public async Task<Group?> ExecuteAsync(int customerId,int groupId)
         {
-            if (customerId <= 0&& groupId<=0)
+            if (customerId <= 0 && groupId <=0)
             {
                 _logger.LogError("Invalid customerId: {CustomerId} and groupId {GroupId}", customerId,groupId);
                 throw new InvalidCustomerIdException("customerId and groupId must be a positive integer.");
