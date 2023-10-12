@@ -2,6 +2,7 @@ using LMSPO.BlazorServerApp.Areas.Identity;
 using LMSPO.BlazorServerApp.Data;
 using LMSPO.BlazorServerApp.WebApiConnection;
 using LMSPO.BlazorServerApp.WebApiConnection.Customers;
+using LMSPO.BlazorServerApp.WebApiConnection.GroupProducts;
 using LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,14 @@ namespace LMSPO.BlazorServerApp
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });
             builder.Services.AddScoped<ICustomersWS, CustomersWS>();
-            
+
+            builder.Services.AddHttpClient("GroupsCleint", client =>
+            {
+                client.BaseAddress = new Uri(apiBaseUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            builder.Services.AddScoped<IGroupsWS, GroupsWS>();
+
 
             builder.Services.AddHttpClient("PurchasedProductsCleint", client =>
             {

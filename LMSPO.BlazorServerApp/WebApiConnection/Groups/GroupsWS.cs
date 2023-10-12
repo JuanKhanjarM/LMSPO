@@ -3,19 +3,19 @@ using System.Text.Json;
 
 namespace LMSPO.BlazorServerApp.WebApiConnection.GroupProducts
 {
-    public class GroupProductsWS : IGroupProductsWS
+    public class GroupsWS : IGroupsWS
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private const string _ApiName = "GroupsCleint";
-        private readonly ILogger<GroupProductsWS> _logger;
+        private readonly ILogger<GroupsWS> _logger;
 
-        public GroupProductsWS(IHttpClientFactory httpClientFactory, ILogger<GroupProductsWS> logger)
+        public GroupsWS(IHttpClientFactory httpClientFactory, ILogger<GroupsWS> logger)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
 
-        public async Task<GroupDto?> GetGroupDetailsAsync(string relativeUrl)
+        public async Task<GroupVM?> GetGroupDetailsAsync(string relativeUrl)
         {
             try
             {
@@ -34,13 +34,13 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.GroupProducts
                             PropertyNameCaseInsensitive = true
                         };
 
-                        GroupDto? customer = await JsonSerializer.DeserializeAsync<GroupDto>(responseStream, options);
-                        if (customer != null)
+                        GroupVM? group = await JsonSerializer.DeserializeAsync<GroupVM>(responseStream, options);
+                        if (group != null)
                         {
                            // LogCustomerGroups(customer.Groups);
-                            return customer;
+                            return group;
                         }
-                        return new GroupDto();
+                        return new GroupVM();
                     }
                     catch (JsonException ex)
                     {
@@ -52,12 +52,12 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.GroupProducts
                 {
                     _logger.LogError("Failed to retrieve the Customer with status code: {StatusCode}", httpResponseMessage.StatusCode);
 
-                    return new GroupDto();
+                    return new GroupVM();
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving the Customer-s.");
+                _logger.LogError(ex, "An error occurred while retrieving the Group-s.");
                 throw;
             }
         }

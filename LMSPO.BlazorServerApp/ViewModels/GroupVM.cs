@@ -2,7 +2,7 @@
 
 namespace LMSPO.BlazorServerApp.ViewModels
 {
-    public class GroupDto
+    public class GroupVM
     {
         public int GroupId { get; set; }
 

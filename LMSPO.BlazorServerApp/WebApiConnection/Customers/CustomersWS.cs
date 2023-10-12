@@ -15,7 +15,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
-        public async Task<CustomerDto> GetCustomerAsync(string relativeUrl)
+        public async Task<CustomerVM> GetCustomerAsync(string relativeUrl)
         {
             try
             {
@@ -34,13 +34,13 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
                             PropertyNameCaseInsensitive = true
                         };
 
-                        CustomerDto? customer = await JsonSerializer.DeserializeAsync<CustomerDto>(responseStream, options);
+                        CustomerVM? customer = await JsonSerializer.DeserializeAsync<CustomerVM>(responseStream, options);
                         if (customer != null)
                         {
                             LogCustomerGroups(customer.Groups);
                             return customer;
                         }
-                        return new CustomerDto();
+                        return new CustomerVM();
                     }
                     catch (JsonException ex)
                     {
@@ -52,7 +52,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
                 {
                     _logger.LogError("Failed to retrieve the Customer with status code: {StatusCode}", httpResponseMessage.StatusCode);
 
-                    return new CustomerDto();
+                    return new CustomerVM();
                 }
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
         }
 
 
-        private void LogCustomerGroups(List<GroupDto> groups)
+        private void LogCustomerGroups(List<GroupVM> groups)
         {
             if (!groups.Any())
             {
@@ -94,7 +94,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
             }
         }
 
-        private void LogGroup(GroupDto group)
+        private void LogGroup(GroupVM group)
         {
             var table = new ConsoleTable("Group Name", "Group EAN", "Customer Id", "Group Total")
                          .AddRow(group.GroupName, group.EAN, group.CustomerId, group.TotalPrice);

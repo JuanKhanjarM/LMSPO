@@ -2,8 +2,8 @@
 
 namespace LMSPO.BlazorServerApp.WebApiConnection.GroupProducts
 {
-    public interface IGroupProductsWS
+    public interface IGroupsWS
     {
-        Task<GroupDto?> GetGroupDetailsAsync(string relativeUrl);
+        Task<GroupVM?> GetGroupDetailsAsync(string relativeUrl);
     }
 }

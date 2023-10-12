@@ -1,10 +1,60 @@
 ﻿@page "/groupDetails/{customerId:int}/{groupId:int}"
 
+@inject IGroupsWS _IGroupsWS
 @if (GroupId.HasValue)
 {
     <!-- Display GroupProduct details based on GroupId -->
-    <h4>GroupProduct Details for Group ID: @GroupId</h4>
+    <h4>GroupProduct Details for Group ID: @groupVM.GroupId</h4>
+    <h4>Group Product Details for Group  : @groupVM.GroupName</h4>
     <!-- Add your GroupProduct details here -->
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Cost</th>
+                    <th>Quantity</th>
+                    <th>Sub Total</th>
+                    <!-- Add more table headers as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var gp in groupVM.GroupProducts)
+                {
+                    <tr>
+                        <td>@gp.ProductName</td>
+                        <td>@gp.Cost</td>
+                        <td>@gp.AddedQuantity</td>
+                        <td>@gp.SubTotal</td>
+                        <!-- Add more table cells for other properties -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @* <button class="btn btn-primary" @onclick="() => ShowGroupDetails(group.GroupId)">Edit</button>*@
+    </div>
+
+    <h4>PurchasedProduct Details for Customer ID: @customerId</h4>
+    <!-- Add your PurchasedProduct details here -->
+    <div style="position: relative; height: 100%;">
+        <!-- Content div (table) -->
+        <div style="height: calc(100% - 40px); overflow-y: auto;">
+            <PurchasedProductTableItems customerId="customerId"
+                                        PurchasedProductDtos="pp">
+
+            </PurchasedProductTableItems>
+        </div>
+
+        <!-- Button div (bottom right) -->
+        <div style="position: absolute; bottom: 0; right: 0;">
+           @* <button class="btn btn-primary" @onclick="NewGroup">Create Group</button>*@
+        </div>
+        <div>
+            <AddNewGroup>
+
+            </AddNewGroup>
+        </div>
+    </div>
 }
 else
 {
@@ -13,6 +63,13 @@ else
 
 @code {
 
-    [Parameter] public int? customerId { get; set; }
+    [Parameter] public int customerId { get; set; }
     [Parameter] public int? GroupId { get; set; }
+    [Parameter] public GroupVM? groupVM { get; set; } = new GroupVM();
+    private List<PurchasedProductVM> pp { get; set; } = new List<PurchasedProductVM>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        groupVM = await _IGroupsWS.GetGroupDetailsAsync($"Groups/{customerId}/{GroupId}");
+    }
 }

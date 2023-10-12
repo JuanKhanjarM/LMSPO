@@ -2,10 +2,11 @@
 
 namespace LMSPO.BlazorServerApp.ViewModels
 {
-    public class CustomerDto
+    public class CustomerVM
     {
         public int CustomerId { get; set; }
 
+        [JsonPropertyName("Customer Name")]
         public string CustomerName { get; set; }
 
         public decimal TotalSpent { get; set; }
@@ -16,7 +17,7 @@ namespace LMSPO.BlazorServerApp.ViewModels
 
         public List<PurchasedProductVM> PurchasedProducts { get; set; }=new List<PurchasedProductVM>();
 
-        public List<GroupDto> Groups { get; set; } = new List<GroupDto>();
+        public List<GroupVM> Groups { get; set; } = new List<GroupVM>();
 
     }
 }

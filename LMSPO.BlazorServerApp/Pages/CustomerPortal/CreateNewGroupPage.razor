@@ -33,8 +33,8 @@
 @code {
     [Parameter]
     public int customerId { get; set; }
-    private CustomerDto? _customer = new CustomerDto();
-    private GroupDto groupModel = new GroupDto();
+    private CustomerVM? _customer = new CustomerVM();
+    private GroupVM groupModel = new GroupVM();
     protected override async Task OnInitializedAsync()
     {
         //_customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/customer/{customerId}");

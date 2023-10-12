@@ -78,7 +78,7 @@
             else
             {
                 <!-- Display GroupProduct details in col-8 -->
-                <h4>GroupProduct Details for Group ID: @selectedGroupId</h4>
+                <h4>Group Products Details for Customer: @customer.CustomerName</h4>
                 <GroupDetails 
                     GroupId="@selectedGroupId" 
                     customerId="customerId" />
@@ -93,8 +93,8 @@
     public int customerId { get; set; }
     private bool showPurchasedProducts = true;
     private int? selectedGroupId;
-    private CustomerDto? customer { get; set; } = new CustomerDto();
-    private List<GroupDto> customerG { get; set; } = new List<GroupDto>();
+    private CustomerVM? customer { get; set; } = new CustomerVM();
+    private List<GroupVM> customerG { get; set; } = new List<GroupVM>();
     private List<GroupProductVM> customerGP { get; set; } = new List<GroupProductVM>();
     private List<PurchasedProductVM>? purchasedProductDtos { get; set; } = new List<PurchasedProductVM>();
 
