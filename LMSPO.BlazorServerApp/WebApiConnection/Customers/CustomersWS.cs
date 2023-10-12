@@ -62,6 +62,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
             }
         }
 
+
         private void LogCustomerGroups(List<GroupDto> groups)
         {
             if (!groups.Any())
