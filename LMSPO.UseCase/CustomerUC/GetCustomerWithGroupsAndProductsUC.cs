@@ -22,7 +22,7 @@ namespace LMSPO.UseCase.CustomerUC
         {
             if (customerId <= 0)
             {
-                _logger.LogError("Invalid customerId: {CustomerId}", customerId); // Log an error
+                _logger.LogError("Invalid customerId: {CustomerId}", customerId);
                 throw new InvalidCustomerIdException("customerId must be a positive integer.");
             }
 

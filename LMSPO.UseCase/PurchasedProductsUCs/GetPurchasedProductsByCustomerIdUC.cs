@@ -20,6 +20,7 @@ namespace LMSPO.UseCase.PurchasedProductsUCs
         {
             if (customerId <= 0)
             {
+
                 _logger.LogError("Invalid customerId: {CustomerId}", customerId); 
                 throw new InvalidCustomerIdException("customerId must be a positive integer.");
             }

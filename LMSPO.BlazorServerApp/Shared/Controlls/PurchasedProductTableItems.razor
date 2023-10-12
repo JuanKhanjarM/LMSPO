@@ -25,6 +25,7 @@
     public int customerId { get; set; } 
     [Parameter]
     public IEnumerable<PurchasedProductVM> PurchasedProductDtos { get; set; } = new List<PurchasedProductVM>();
+
     protected override async Task  OnParametersSetAsync()
     {
         PurchasedProductDtos = await _IPurchasedProdutsWS.GetPurchasedProductAsync($"PurchasedProducts/{customerId}");
