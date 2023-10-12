@@ -6,13 +6,13 @@ namespace LMSPO.BlazorServerApp.Shared.Controlls
     public partial class GroupProductTableRow
     {
         [Parameter]
-        public GroupProductDto GroupProduct { get; set; } = new GroupProductDto();
+        public GroupProductVM GroupProduct { get; set; } = new GroupProductVM();
 
         [Parameter]
         public int PurchasedProductAvailability { get; set; }
 
         [Parameter]
-        public EventCallback<GroupProductDto> RemoveProduct { get; set; }
+        public EventCallback<GroupProductVM> RemoveProduct { get; set; }
 
         private bool IsInvalidQuantity()
         {

@@ -1,6 +1,6 @@
 ﻿<tr class="d-flex justify-content-sm-between align-baseline tableRowFont">
-    <td>@GroupProduct.PurchasedProduct.ProductName</td>
-    <td class="fw-bold">@GroupProduct.PurchasedProduct.ProductPrice</td>
+    <td>@GroupProduct.ProductName</td>
+    <td class="fw-bold">@GroupProduct.Cost</td>
     <td class="fw-bold">
         <span>@($"{GroupProduct.AddedQuantity + GroupProduct.InputProductQuantity}")</span>
         @*<span>@($"{GroupProduct.AddedQty} + {GroupProduct.InputProductQuantity} = {GroupProduct.AddedQty + GroupProduct.InputProductQuantity}")</span>*@
@@ -10,7 +10,7 @@
             <input type="number"
                    @key="GroupProduct.PurchasedProductId"
                    min="0"
-                   max="@GroupProduct.PurchasedProduct.PurchasedQty"
+                   max="@GroupProduct.AddedQuantity"
                    class="inputNumber"
                    id="@($"inputNumber{GroupProduct.PurchasedProductId}")"
             @bind="GroupProduct.InputProductQuantity"

@@ -18,15 +18,16 @@
                     <div class="card-header">
                         @group.GroupName
                         @group.EAN
+                        @group.TotalPrice.ToString("c")
                     </div>
                     <div>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>gp ID</th>
-                                    <th>gp Name</th>
-                                    <th>gp Price</th>
+                                    <th>Type</th>
+                                    <th>Cost</th>
                                     <th>Quantity</th>
+                                    <th>Sub Total</th>
                                     <!-- Add more table headers as needed -->
                                 </tr>
                             </thead>
@@ -34,10 +35,10 @@
                                 @foreach (var gp in group.GroupProducts)
                                 {
                                     <tr>
-                                        <td>@gp.PurchasedProduct</td>
-                                        <td>@gp.PurchasedProduct.ProductName</td>
+                                        <td>@gp.ProductName</td>
+                                        <td>@gp.Cost</td>
                                         <td>@gp.AddedQuantity</td>
-                                        <td>@gp.PurchasedProduct.PurchasedQty</td>
+                                        <td>@gp.SubTotal</td>
                                         <!-- Add more table cells for other properties -->
                                     </tr>
                                 }
@@ -94,15 +95,34 @@
     private int? selectedGroupId;
     private CustomerDto? customer { get; set; } = new CustomerDto();
     private List<GroupDto> customerG { get; set; } = new List<GroupDto>();
+    private List<GroupProductVM> customerGP { get; set; } = new List<GroupProductVM>();
     private List<PurchasedProductVM>? purchasedProductDtos { get; set; } = new List<PurchasedProductVM>();
 
     protected override async Task OnInitializedAsync()
     {
-        customer = await _ICustomersWS.GetCustomerAsync($"Customers/{customerId}");
-        if (customer!=null)
+        try
         {
-            purchasedProductDtos = customer.PurchasedProducts;
-            customerG = customer.Groups;
+            customer = await _ICustomersWS.GetCustomerAsync($"Customers/{customerId}");
+
+            if (customer != null)
+            {
+                customerG = customer.Groups;
+
+                //if (customerG.Any())
+                //{
+                //    customerGP = customerG.First().GroupProducts;
+                //}
+                purchasedProductDtos = customer.PurchasedProducts;
+            }
+            else
+            {
+                // Handle the case where the customer data is null (e.g., display an error message)
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions (e.g., log the error or display an error message)
+            // You can also set a flag or error message to indicate a problem.
         }
     }
 

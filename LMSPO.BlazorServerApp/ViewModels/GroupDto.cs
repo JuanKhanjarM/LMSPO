@@ -6,14 +6,16 @@ namespace LMSPO.BlazorServerApp.ViewModels
     {
         public int GroupId { get; set; }
 
-        public string GroupName { get; set; }
+        public string GroupName { get; set; } = null!;
         public string EAN { get; set; }
 
         public int CustomerId { get; set; }
 
+        [JsonPropertyName("Total/kr.")]
         public decimal TotalPrice { get; set; }
 
-        public List<GroupProductDto> GroupProducts { get; set; } = new List<GroupProductDto>();
+        [JsonPropertyName("Group's Producs")]
+        public List<GroupProductVM> GroupProducts { get; set; } = new List<GroupProductVM>();
     }
 
 }

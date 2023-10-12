@@ -6,7 +6,7 @@ namespace LMSPO.WebApi.Dtos
     {
         public int GroupId { get; set; }
 
-        [JsonPropertyName("Navn på afdeling")]
+        //[JsonPropertyName("Navnpå afdeling")]
         public string GroupName { get; set; }
         [JsonPropertyName("EAN")]
         public string EAN { get; set; }
