@@ -27,21 +27,23 @@ namespace LMSPO.BlazorServerApp
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             builder.Services.AddSingleton<WeatherForecastService>();
 
+            // Load API base URL from appsettings.json
+            var apiBaseUrl =builder.Configuration["ApiBaseUrl"];
             //add httpclinetfactory
-            builder.Services.AddHttpClient("Customers", client =>
+            builder.Services.AddHttpClient("CustomersCleint", client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5047/api/");
+                client.BaseAddress = new Uri(apiBaseUrl);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });
-            builder.Services.AddTransient<ICustomersWS, CustomersWS>();
+            builder.Services.AddScoped<ICustomersWS, CustomersWS>();
             
 
-            builder.Services.AddHttpClient("PurchasedProducts", client =>
+            builder.Services.AddHttpClient("PurchasedProductsCleint", client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5047/api/PurchasedProducts/");
+                client.BaseAddress = new Uri(apiBaseUrl);
                 client.DefaultRequestHeaders.Add("Accept","application/json");
             });
-            builder.Services.AddTransient<IPurchasedProdutsWS, PurchasedProdutsWS>();
+            builder.Services.AddScoped<IPurchasedProdutsWS, PurchasedProdutsWS>();
 
 
 

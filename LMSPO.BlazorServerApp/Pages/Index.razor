@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@page "/{customerIdp:int}"
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -8,15 +8,19 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-
-
+<input type="number" @bind="customerIdp" />
+<PurchasedProductTableItems 
+    customerId="customerId" 
+    PurchasedProductDtos="PurchasedProducts">
+</PurchasedProductTableItems>
 
 @code{
-
-    //private CustomerDto? customer { get; set; } = new CustomerDto();
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    customer = await _IWebExecuter.InvokeGetTAsync<CustomerDto>($"Customers/{1}");
-    //}
+    [Parameter] public int customerIdp { get; set; } 
+    private int customerId { get; set; }
+    private IEnumerable<PurchasedProductVM> PurchasedProducts { get; set; } = new List<PurchasedProductVM>();
+    protected override async Task OnInitializedAsync()
+    {
+        customerId = customerIdp;
+    }
 }
 

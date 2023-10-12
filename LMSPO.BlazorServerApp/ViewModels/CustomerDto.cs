@@ -14,8 +14,9 @@ namespace LMSPO.BlazorServerApp.ViewModels
 
         public decimal TotalGroupSpent { get; set; }
 
-        public List<PurchasedProductDto> PurchasedProducts { get; set; }=new List<PurchasedProductDto>();
+        public List<PurchasedProductVM> PurchasedProducts { get; set; }=new List<PurchasedProductVM>();
 
         public List<GroupDto> Groups { get; set; } = new List<GroupDto>();
+
     }
 }

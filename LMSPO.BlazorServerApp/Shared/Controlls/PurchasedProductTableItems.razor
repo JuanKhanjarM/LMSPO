@@ -21,13 +21,12 @@
 </table>
 
 @code {
-
     [Parameter]
-    public int customerId { get; set;}
+    public int customerId { get; set; } 
     [Parameter]
-    public IEnumerable<PurchasedProductDto> PurchasedProductDtos { get; set; } = new List<PurchasedProductDto>();
+    public IEnumerable<PurchasedProductVM> PurchasedProductDtos { get; set; } = new List<PurchasedProductVM>();
     protected override async Task  OnParametersSetAsync()
     {
-        //PurchasedProductDtos = await _IPurchasedProdutsWS.GetPurchasedProductAsync($"{customerId}");
+        PurchasedProductDtos = await _IPurchasedProdutsWS.GetPurchasedProductAsync($"PurchasedProducts/{customerId}");
     }
 }

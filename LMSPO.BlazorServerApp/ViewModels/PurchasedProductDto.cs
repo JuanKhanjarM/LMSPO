@@ -1,10 +1,10 @@
 ﻿
 namespace LMSPO.BlazorServerApp.ViewModels
 {
-    public class PurchasedProductDto
+    public class PurchasedProductVM
     {
         public int PurchasedProductId { get; set; }
-        public string ProductName { get; set; }
+        public string ProductName { get; set; } = null!;
         public int PurchasedQty { get; set; }
         public decimal ProductPrice { get; set; }
         public decimal TotalCost { get; set; }

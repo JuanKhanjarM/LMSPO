@@ -15,11 +15,6 @@ namespace LMSPO.SqlServer.Repository
             _dbContextFactory = dbContextFactory;
         }
 
-        public Task<Customer> GetCustomerById(string CustomerId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Customer?> GetCustomerWithGroupsAndProductsAsync(int customerId)
         {
             using LMSDbContext _dbContext = _dbContextFactory.CreateDbContext();
@@ -41,5 +36,11 @@ namespace LMSPO.SqlServer.Repository
 
             return customer;
         }
+
+        public Task<Customer> GetCustomerById(string CustomerId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

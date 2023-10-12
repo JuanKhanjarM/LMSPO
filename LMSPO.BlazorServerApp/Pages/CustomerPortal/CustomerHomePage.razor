@@ -9,9 +9,9 @@
     <div class="row">
         <div class="col-md-4">
             <h4>Customer ID: @customerId : @customer.CustomerName</h4>
-            <h4>Groups ( @customer.Groups.Count() )</h4>
+            <h4>Groups ( @customerG.Count() )</h4>
             <!-- Display Group cards and "Edit" button -->
-            @foreach (var group in customer.Groups)
+            @foreach (var group in customerG)
             {
                 <div class="card">
                     <!-- Display Group details -->
@@ -56,7 +56,9 @@
                 <div style="position: relative; height: 100%;">
                     <!-- Content div (table) -->
                     <div style="height: calc(100% - 40px); overflow-y: auto;">
-                        <PurchasedProductTableItems customerId="customer.CustomerId" PurchasedProductDtos="purchasedProductDtos">
+                        <PurchasedProductTableItems 
+                            customerId="customerId" 
+                            PurchasedProductDtos="purchasedProductDtos">
 
                        </PurchasedProductTableItems>
                     </div>
@@ -76,7 +78,9 @@
             {
                 <!-- Display GroupProduct details in col-8 -->
                 <h4>GroupProduct Details for Group ID: @selectedGroupId</h4>
-                <GroupDetails GroupId="@selectedGroupId" customerId="customerId" />
+                <GroupDetails 
+                    GroupId="@selectedGroupId" 
+                    customerId="customerId" />
             }
         </div>
     </div>
@@ -89,19 +93,17 @@
     private bool showPurchasedProducts = true;
     private int? selectedGroupId;
     private CustomerDto? customer { get; set; } = new CustomerDto();
-    private List<PurchasedProductDto>? purchasedProductDtos { get; set; } = new List<PurchasedProductDto>();
+    private List<GroupDto> customerG { get; set; } = new List<GroupDto>();
+    private List<PurchasedProductVM>? purchasedProductDtos { get; set; } = new List<PurchasedProductVM>();
 
     protected override async Task OnInitializedAsync()
     {
         customer = await _ICustomersWS.GetCustomerAsync($"Customers/{customerId}");
         if (customer!=null)
         {
-            purchasedProductDtos = customer.PurchasedProducts.ToList();
+            purchasedProductDtos = customer.PurchasedProducts;
+            customerG = customer.Groups;
         }
-    }
-    protected override async Task OnParametersSetAsync()
-    {
-        
     }
 
     private void NewGroup()

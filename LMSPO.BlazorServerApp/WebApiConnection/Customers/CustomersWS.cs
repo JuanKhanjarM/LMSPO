@@ -6,7 +6,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
     public class CustomersWS : ICustomersWS
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private const string _ApiName = "Customers";
+        private const string _ApiName = "CustomersCleint";
         private readonly ILogger<CustomersWS> _logger;
 
         public CustomersWS(IHttpClientFactory httpClientFactory, ILogger<CustomersWS> logger)
@@ -28,8 +28,17 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
                     using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
                     try
                     {
-                        var customer = await JsonSerializer.DeserializeAsync<CustomerDto>(responseStream);
-                        return customer;
+                        JsonSerializerOptions options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        };
+
+                        CustomerDto? customer = await JsonSerializer.DeserializeAsync<CustomerDto>(responseStream, options);
+                        if (customer != null)
+                        {
+                            return customer;
+                        }
+                        return new CustomerDto();
                     }
                     catch (JsonException ex)
                     {
@@ -41,7 +50,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.Customers
                 {
                     _logger.LogError("Failed to retrieve the Customer with status code: {StatusCode}", httpResponseMessage.StatusCode);
 
-                    return null;
+                    return new CustomerDto();
                 }
             }
             catch (Exception ex)

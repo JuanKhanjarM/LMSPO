@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LMSPO.WebApi.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase

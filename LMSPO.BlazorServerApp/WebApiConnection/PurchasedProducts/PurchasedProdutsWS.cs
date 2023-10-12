@@ -1,4 +1,5 @@
-﻿using LMSPO.BlazorServerApp.ViewModels;
+﻿using ConsoleTables;
+using LMSPO.BlazorServerApp.ViewModels;
 using System.Text;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts
     public class PurchasedProdutsWS : IPurchasedProdutsWS
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private const string _ApiName = "PurchasedProducts";
+        private const string _ApiName = "PurchasedProductsCleint";
         private readonly ILogger<PurchasedProdutsWS> _logger;
 
         public PurchasedProdutsWS(IHttpClientFactory httpClientFactory, ILogger<PurchasedProdutsWS> logger)
@@ -15,7 +16,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
-        public async Task<IEnumerable<PurchasedProductDto>> GetPurchasedProductAsync(string relativeUrl)
+        public async Task<IEnumerable<PurchasedProductVM>> GetPurchasedProductAsync(string relativeUrl)
         {
             try
             {
@@ -26,11 +27,35 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
-                    using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+                    using Stream responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
                     try
                     {
-                        var purchasedProduct = await JsonSerializer.DeserializeAsync<IEnumerable<PurchasedProductDto>>(responseStream);
-                        return purchasedProduct;
+                        JsonSerializerOptions options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        };
+                        IEnumerable<PurchasedProductVM>? purchasedProduct = await JsonSerializer.DeserializeAsync<IEnumerable<PurchasedProductVM>>(responseStream, options);
+                        if (purchasedProduct != null && purchasedProduct.Any())
+                        {
+                            foreach (var item in purchasedProduct)
+                            {
+                                var table = new ConsoleTable("Product Name", "Product Qty", "Product Price", "Product Total")
+                                             .AddRow(item.ProductName, item.PurchasedQty, item.ProductPrice, item.TotalCost);
+
+                                // Set the console color (for example, green)
+                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+                                // Log the table with colors
+                                _logger.LogInformation(table.ToMarkDownString());
+
+                                // Reset the console color
+                                Console.ResetColor();
+                            }
+
+                            return purchasedProduct;
+                        }
+                        return Enumerable.Empty<PurchasedProductVM>();
                     }
                     catch (JsonException ex)
                     {
@@ -52,7 +77,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts
             }
         }
 
-        public async Task<PurchasedProductDto> CreatePurchasedProductAsync(string relativeUrl, PurchasedProductDto purchasedProduct)
+        public async Task<PurchasedProductVM> CreatePurchasedProductAsync(string relativeUrl, PurchasedProductVM purchasedProduct)
         {
             try
             {
@@ -68,7 +93,7 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts
                     using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
                     try
                     {
-                        PurchasedProductDto createdPurchaseProduct = await JsonSerializer.DeserializeAsync<PurchasedProductDto>(responseStream);
+                        PurchasedProductVM createdPurchaseProduct = await JsonSerializer.DeserializeAsync<PurchasedProductVM>(responseStream);
                         return createdPurchaseProduct;
                     }
                     catch (JsonException ex)
@@ -90,10 +115,10 @@ namespace LMSPO.BlazorServerApp.WebApiConnection.PurchasedProducts
                 _logger.LogError(ex, "An error occurred while creating a purchased product.");
                 throw;
             }
-            
+
         }
 
-        public async Task<bool> UpdatePurchasedProductAsync(string relativeUrl, PurchasedProductDto updatedProduct)
+        public async Task<bool> UpdatePurchasedProductAsync(string relativeUrl, PurchasedProductVM updatedProduct)
         {
             try
             {

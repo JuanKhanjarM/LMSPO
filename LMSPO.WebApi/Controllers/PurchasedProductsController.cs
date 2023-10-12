@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ConsoleTables;
 using LMSPO.CoreBusiness.Entities;
 using LMSPO.UseCase.PurchasedProductsUCs.PurchasedProductsUCsInterfaces;
 using LMSPO.WebApi.Dtos;
@@ -10,13 +11,16 @@ namespace LMSPO.WebApi.Controllers
     [ApiController]
     public class PurchasedProductsController : ControllerBase
     {
-        private IMapper _mapper;
+        
         private readonly IGetPurchasedProductsByCustomerIdUC _getPurchasedProductsByCustomerIdUC;
+        private readonly IMapper _mapper;
+        private ILogger<PurchasedProductsController> _logger;
 
-        public PurchasedProductsController(IGetPurchasedProductsByCustomerIdUC getPurchasedProductsByCustomerIdUC, IMapper mapper)
+        public PurchasedProductsController(IGetPurchasedProductsByCustomerIdUC getPurchasedProductsByCustomerIdUC, IMapper mapper, ILogger<PurchasedProductsController> logger)
         {
             _getPurchasedProductsByCustomerIdUC = getPurchasedProductsByCustomerIdUC;
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger;
         }
 
         [HttpGet("{customerId:int}")]
@@ -28,7 +32,24 @@ namespace LMSPO.WebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<IEnumerable<PurchasedProductDto>>(PurchasedProducts));
+            IEnumerable<PurchasedProductDto> PPDto = _mapper.Map<IEnumerable<PurchasedProductDto>>(PurchasedProducts);
+
+
+            foreach (var item in PPDto)
+            {
+                var table = new ConsoleTable("Product Name", "Product Qty", "Product Price", "Product Total")
+                             .AddRow(item.ProductName, item.PurchasedQty, item.ProductPrice, item.TotalCost);
+
+                // Set the console color (for example, green)
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+                // Log the table with colors
+                _logger.LogInformation(table.ToMarkDownString());
+
+                // Reset the console color
+                Console.ResetColor();
+            }
+            return Ok(PPDto);
         }
         //[HttpPost]
         //public async Task<IActionResult> CreatePurchasedProduct([FromBody] PurchasedProductDto purchasedProduct)

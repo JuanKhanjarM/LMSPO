@@ -8,6 +8,6 @@
         public int AddedQuantity { get; set; }
         public int InputProductQuantity { get; set; }
         public GroupDto? Group { get; set; } // Nullable Group navigation property
-        public PurchasedProductDto? PurchasedProduct { get; set; } // Nullable PurchasedProduct navigation property
+        public PurchasedProductVM? PurchasedProduct { get; set; } // Nullable PurchasedProduct navigation property
     }
 }
